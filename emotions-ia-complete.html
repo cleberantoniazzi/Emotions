@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emotions.IA — HumanWare Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ─── */
+:root{
+  --navy:#1B2A6B;--navy-d:#111C50;--navy-l:#2A3D8A;
+  --rose:#E8738A;--rose-l:#F0A0B2;--rose-xl:#FBE9ED;
+  --bg:#F4F6FA;--bg2:#ECEEF5;
+  --white:#FFFFFF;
+  --ink:#1A1D2E;--ink2:#4B5168;--ink3:#8B90A8;--ink4:#C4C8D8;
+  --border:#E4E7F0;--border2:#D0D4E8;
+  --green:#0F6E56;--green-l:#EAF5F1;
+  --amber:#854F0B;--amber-l:#FEF3E2;
+  --blue-l:#EEF3FF;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--r20:20px;--r24:24px;
+  --shadow-sm:0 1px 3px rgba(27,42,107,.06),0 1px 2px rgba(27,42,107,.04);
+  --shadow-md:0 4px 16px rgba(27,42,107,.08),0 1px 4px rgba(27,42,107,.05);
+  --shadow-lg:0 12px 40px rgba(27,42,107,.12),0 4px 12px rgba(27,42,107,.06);
+  --fh:'Syne',sans-serif;
+  --fb:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);font-family:var(--fb);font-size:14px;color:var(--ink);-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+button{font-family:var(--fb);cursor:pointer;border:none;background:none}
+input,select{font-family:var(--fb)}
+a{text-decoration:none}
+
+/* ─── SCREENS ─── */
+.screen{display:none;width:100%;min-height:100vh}
+.screen.active{display:flex}
+
+/* ══════════════════════════════════════
+   LOGIN SCREEN
+══════════════════════════════════════ */
+#s-login{
+  background:var(--white);
+  flex-direction:column;
+  align-items:stretch;
+}
+.login-wrap{
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+.login-header{
+  padding:28px 36px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border-bottom:1px solid var(--border);
+}
+.lh-brand{font-family:var(--fh);font-size:17px;font-weight:800;color:var(--navy);letter-spacing:.2px}
+.lh-brand em{color:var(--rose);font-style:normal}
+.lh-sub{font-size:9px;color:var(--navy);letter-spacing:2px;text-transform:uppercase;margin-top:1px;opacity:.6}
+
+.login-body{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+  background:linear-gradient(160deg,var(--white) 55%,#F0F3FF 100%);
+}
+.login-card{
+  width:100%;
+  max-width:420px;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--r24);
+  padding:40px;
+  box-shadow:var(--shadow-lg);
+}
+.lc-eyebrow{font-size:11px;font-weight:600;color:var(--rose);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
+.lc-title{font-family:var(--fh);font-size:24px;font-weight:800;color:var(--navy);line-height:1.2;margin-bottom:6px}
+.lc-sub{font-size:13px;color:var(--ink3);margin-bottom:28px;line-height:1.55}
+
+.role-pills{display:flex;gap:6px;margin-bottom:24px}
+.role-pill{flex:1;padding:8px 6px;border:1px solid var(--border);border-radius:var(--r8);text-align:center;cursor:pointer;transition:all .15s;background:var(--white)}
+.role-pill .rp-icon{font-size:16px;margin-bottom:3px}
+.role-pill .rp-name{font-size:11px;color:var(--ink3)}
+.role-pill.sel{border-color:var(--navy);background:var(--blue-l)}
+.role-pill.sel .rp-name{color:var(--navy);font-weight:500}
+
+.field-wrap{margin-bottom:16px}
+.field-label{display:block;font-size:12px;font-weight:500;color:var(--ink2);margin-bottom:6px}
+.field-input{
+  width:100%;height:44px;border:1px solid var(--border);border-radius:var(--r8);
+  padding:0 14px;font-size:13px;color:var(--ink);background:var(--white);
+  transition:border-color .15s,box-shadow .15s;outline:none;
+}
+.field-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,42,107,.08)}
+.field-input::placeholder{color:var(--ink4)}
+.field-input.has-val{border-color:var(--border2)}
+.pw-wrap{position:relative}
+.pw-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--ink4);cursor:pointer;padding:2px;line-height:1}
+
+.forgot-row{display:flex;justify-content:flex-end;margin:-8px 0 20px}
+.forgot-link{font-size:12px;color:var(--rose);cursor:pointer;transition:color .15s}
+.forgot-link:hover{color:#C4526A}
+
+.btn-primary{
+  width:100%;height:46px;background:var(--navy);color:var(--white);
+  border-radius:var(--r8);font-size:14px;font-weight:600;font-family:var(--fh);
+  letter-spacing:.3px;transition:background .15s,transform .1s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary:hover{background:var(--navy-l)}
+.btn-primary:active{transform:scale(.99)}
+
+.or-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--ink4);font-size:11px}
+.or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.sso-row{display:flex;gap:8px;margin-bottom:20px}
+.sso-btn{
+  flex:1;height:38px;border:1px solid var(--border);border-radius:var(--r8);
+  background:var(--white);font-size:12px;color:var(--ink2);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:border-color .15s,background .15s;
+}
+.sso-btn:hover{border-color:var(--border2);background:var(--bg)}
+
+.login-footer{text-align:center;font-size:12px;color:var(--ink3)}
+.login-footer a{color:var(--navy);font-weight:500;cursor:pointer}
+
+/* MFA step */
+.mfa-grid{display:flex;gap:8px;margin-bottom:8px}
+.mfa-in{
+  flex:1;height:52px;border:1px solid var(--border);border-radius:var(--r8);
+  text-align:center;font-size:20px;font-weight:700;font-family:var(--fh);
+  color:var(--navy);background:var(--white);outline:none;transition:border-color .15s;
+}
+.mfa-in:focus{border-color:var(--navy)}
+.mfa-in.filled{border-color:var(--navy);background:var(--blue-l)}
+
+/* Success step */
+.success-icon{width:64px;height:64px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+
+/* step dots */
+.step-dots{display:flex;gap:5px;justify-content:center;margin-bottom:24px}
+.step-dot{width:6px;height:6px;border-radius:50%;background:var(--border2)}
+.step-dot.active{background:var(--navy);width:18px;border-radius:3px}
+
+/* ══════════════════════════════════════
+   APP LAYOUT
+══════════════════════════════════════ */
+#s-app{flex-direction:row;align-items:stretch}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:230px;flex-shrink:0;
+  background:var(--white);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;
+  overflow-y:auto;
+}
+.sb-top{
+  padding:20px 18px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.sb-logo-mark{flex-shrink:0}
+.sb-brand{font-family:var(--fh);font-size:15px;font-weight:800;color:var(--navy)}
+.sb-brand em{color:var(--rose);font-style:normal}
+.sb-tagline{font-size:9px;color:var(--navy);letter-spacing:1.8px;text-transform:uppercase;margin-top:1px;opacity:.5}
+
+.sb-nav{flex:1;padding:14px 10px;overflow-y:auto}
+.sb-group{margin-bottom:20px}
+.sb-group-label{font-size:9px;font-weight:600;color:var(--ink4);letter-spacing:1.2px;text-transform:uppercase;padding:0 8px;margin-bottom:7px}
+.sb-link{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 10px;border-radius:var(--r8);cursor:pointer;
+  color:var(--ink3);font-size:12.5px;font-weight:400;
+  transition:all .14s;margin-bottom:1px;width:100%;border:none;background:none;text-align:left;
+}
+.sb-link:hover{background:var(--bg);color:var(--ink)}
+.sb-link.active{background:var(--blue-l);color:var(--navy);font-weight:500}
+.sb-link .ic{width:15px;height:15px;flex-shrink:0;opacity:.7}
+.sb-link.active .ic{opacity:1}
+.sb-badge{margin-left:auto;background:var(--rose);color:var(--white);font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px}
+.sb-active-bar{width:3px;height:18px;border-radius:2px;background:transparent;flex-shrink:0;margin-right:-1px}
+.sb-link.active .sb-active-bar{background:var(--navy)}
+
+.sb-footer{padding:14px;border-top:1px solid var(--border)}
+.sb-user-card{
+  display:flex;align-items:center;gap:9px;padding:9px 10px;
+  background:var(--bg);border-radius:var(--r8);cursor:pointer;
+  transition:background .14s;
+}
+.sb-user-card:hover{background:var(--bg2)}
+.uname{font-size:12px;font-weight:500;color:var(--navy)}
+.urole{font-size:10px;color:var(--ink3)}
+.av{
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:var(--white);flex-shrink:0;font-family:var(--fh);
+}
+.av-32{width:32px;height:32px;font-size:12px}
+.av-28{width:28px;height:28px;font-size:10px}
+.av-24{width:24px;height:24px;font-size:9px}
+.av-40{width:40px;height:40px;font-size:14px}
+.av-48{width:48px;height:48px;font-size:16px}
+.c-navy{background:var(--navy)}
+.c-rose{background:var(--rose)}
+.c-teal{background:#0F6E56}
+.c-amber{background:#BA7517}
+.c-blue{background:#185FA5}
+.c-purple{background:#5C4CB7}
+
+/* ── MAIN ── */
+.main-area{flex:1;display:flex;flex-direction:column;min-width:0;min-height:100vh}
+
+/* TOPBAR */
+.topbar{
+  height:58px;background:var(--white);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 24px;gap:10px;
+  position:sticky;top:0;z-index:50;
+}
+.tb-title{font-family:var(--fh);font-size:16px;font-weight:700;color:var(--navy);flex:1}
+.tb-sub{font-size:12px;color:var(--ink3);font-weight:400;font-family:var(--fb);margin-left:6px}
+.tb-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:7px 14px;border-radius:var(--r8);font-size:12px;font-weight:500;
+  border:1px solid var(--border);background:var(--white);color:var(--ink2);
+  transition:all .14s;
+}
+.tb-btn:hover{background:var(--bg);border-color:var(--border2);color:var(--navy)}
+.tb-btn.prim{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.tb-btn.prim:hover{background:var(--navy-l)}
+.notif-btn{
+  position:relative;width:34px;height:34px;border-radius:var(--r8);
+  background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:background .14s;
+}
+.notif-btn:hover{background:var(--bg2)}
+.notif-dot{position:absolute;top:7px;right:7px;width:6px;height:6px;background:var(--rose);border-radius:50%;border:1.5px solid var(--white)}
+
+/* CONTENT */
+.content{padding:22px 24px;flex:1}
+
+/* PAGE VISIBILITY */
+.page{display:none}
+.page.active{display:block}
+
+/* ─── SHARED COMPONENTS ─── */
+/* KPI Cards */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
+.kpi-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r16);
+  padding:18px 20px;position:relative;overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.kpi-stripe{position:absolute;top:0;left:0;width:3px;height:100%}
+.kpi-label{font-size:10px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
+.kpi-val{font-family:var(--fh);font-size:28px;font-weight:800;line-height:1;margin-bottom:6px}
+.kpi-delta{font-size:11px;color:var(--ink3);display:flex;align-items:center;gap:3px}
+.up{color:#0F6E56;font-weight:500}.dn{color:#A32D2D;font-weight:500}
+
+/* Cards */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r16);padding:20px;box-shadow:var(--shadow-sm)}
+.card-sm{padding:16px}
+.card-title{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.card-sub{font-size:11px;color:var(--ink3);margin-bottom:14px}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+
+/* Grid */
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.g-32{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:14px}
+.g-23{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:14px}
+.mb14{margin-bottom:14px}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.2px}
+.b-navy{background:var(--blue-l);color:var(--navy)}
+.b-rose{background:var(--rose-xl);color:#993556}
+.b-green{background:var(--green-l);color:#0F6E56}
+.b-amber{background:var(--amber-l);color:var(--amber)}
+.b-gray{background:var(--bg2);color:var(--ink3)}
+.b-purple{background:#EEEDFE;color:#534AB7}
+
+/* Progress / Score rows */
+.sr{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.sr-lbl{font-size:12px;color:var(--ink2);width:108px;flex-shrink:0}
+.sr-track{flex:1;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.sr-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.sr-num{font-size:12px;font-weight:600;width:28px;text-align:right;flex-shrink:0}
+
+/* IA Insight block */
+.ia-box{
+  background:#F0F4FF;border:1px solid #D0D9F5;border-radius:var(--r12);
+  padding:14px 16px;display:flex;gap:10px;margin-bottom:10px;
+}
+.ia-dot{width:7px;height:7px;border-radius:50%;background:var(--navy);flex-shrink:0;margin-top:4px}
+.ia-dot.rose{background:var(--rose)}
+.ia-dot.green{background:var(--green)}
+.ia-text{font-size:12px;color:var(--ink2);line-height:1.65}
+
+/* Timeline */
+.tl-wrap{padding-left:18px;position:relative}
+.tl-wrap::before{content:'';position:absolute;left:5px;top:6px;bottom:0;width:1px;background:var(--border)}
+.tl-item{position:relative;margin-bottom:16px}
+.tl-dot{position:absolute;left:-16px;top:3px;width:9px;height:9px;border-radius:50%;border:2px solid var(--navy);background:var(--white)}
+.tl-dot.done{background:var(--navy)}
+.tl-dot.next{border-color:var(--rose)}
+.tl-date{font-size:10px;color:var(--ink4);margin-bottom:2px}
+.tl-title{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.tl-desc{font-size:11px;color:var(--ink3);line-height:1.5}
+
+/* Challenge cards */
+.ch-card{
+  background:var(--bg);border:1px solid var(--border);border-radius:var(--r12);
+  padding:14px;cursor:pointer;transition:all .15s;
+}
+.ch-card:hover{border-color:var(--navy);background:var(--blue-l)}
+.ch-icon{width:32px;height:32px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;margin-bottom:10px;flex-shrink:0}
+.ch-title{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px}
+.ch-desc{font-size:11px;color:var(--ink3);margin-bottom:10px;line-height:1.5}
+.xp-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:var(--amber);background:var(--amber-l);padding:2px 7px;border-radius:10px}
+.prog-bar-sm{height:3px;background:var(--border);border-radius:2px;margin-bottom:8px;overflow:hidden}
+.prog-fill-sm{height:100%;border-radius:2px}
+
+/* Peer cards */
+.peer-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r12);padding:12px 14px;margin-bottom:8px}
+.peer-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.peer-msg{font-size:12px;color:var(--ink2);line-height:1.55}
+
+/* Skill pillars (HumanWare axes) */
+.hw-pillar{background:var(--bg);border:1px solid var(--border);border-radius:var(--r12);padding:14px}
+.hw-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
+
+/* Leaderboard */
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r8);transition:background .13s;cursor:pointer}
+.lb-row:hover{background:var(--bg)}
+.lb-rank{font-family:var(--fh);font-weight:800;font-size:17px;width:26px;color:var(--ink4)}
+.gold{color:#B8860B}.silver{color:#708090}.bronze{color:#A0522D}
+
+/* Squad slots */
+.squad-slot{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r12);padding:14px;text-align:center;cursor:pointer;transition:all .15s}
+.squad-slot:hover{border-color:var(--navy);background:var(--blue-l)}
+.squad-slot-name{font-size:12px;font-weight:600;color:var(--ink);margin-top:8px;margin-bottom:2px}
+.squad-slot-role{font-size:11px;color:var(--ink3)}
+
+/* Table */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:10px 14px;font-size:10px;color:var(--ink4);text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--border);font-weight:600;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(27,42,107,.02)}
+
+/* Bar chart inline */
+.bar-chart{display:flex;align-items:flex-end;gap:7px;height:100px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-col-fill{width:100%;border-radius:var(--r4) var(--r4) 0 0;transition:height 1s ease;min-height:4px}
+.bar-lbl{font-size:9px;color:var(--ink4)}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--navy);color:var(--white);
+  border-radius:var(--r12);padding:12px 18px;
+  display:flex;align-items:center;gap:10px;
+  z-index:999;font-size:13px;font-weight:500;
+  box-shadow:var(--shadow-lg);
+  transform:translateY(80px);opacity:0;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  max-width:320px;pointer-events:none;
+}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* Modal */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(27,42,107,.35);
+  z-index:200;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+  padding:20px;
+}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--white);border-radius:var(--r20);padding:28px;
+  width:100%;max-width:480px;
+  box-shadow:var(--shadow-lg);
+  transform:translateY(18px);transition:transform .2s;
+}
+.modal-bg.open .modal{transform:translateY(0)}
+.modal-title{font-family:var(--fh);font-size:18px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--ink3);margin-bottom:20px}
+
+/* Scrollable stack */
+.stack{display:flex;flex-direction:column;gap:8px}
+
+/* Misc */
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}
+.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}
+.flex{display:flex}.ai-c{align-items:center}.jb{justify-content:space-between}
+.gap6{gap:6px}.gap8{gap:8px}.gap10{gap:10px}.gap12{gap:12px}
+.fw5{font-weight:500}.fw6{font-weight:600}.fw7{font-weight:700}
+.fs11{font-size:11px}.fs12{font-size:12px}.fs13{font-size:13px}
+.tc{text-align:center}
+.muted{color:var(--ink3)}
+.navy{color:var(--navy)}
+.rose{color:var(--rose)}
+.wrap{flex-wrap:wrap}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.fade-up{animation:fadeUp .4s ease both}
+.fade-up-1{animation:fadeUp .4s .05s ease both}
+.fade-up-2{animation:fadeUp .4s .1s ease both}
+.fade-up-3{animation:fadeUp .4s .15s ease both}
+.fade-up-4{animation:fadeUp .4s .2s ease both}
+.fade-up-5{animation:fadeUp .4s .25s ease both}
+
+/* Radar */
+.radar-svg{overflow:visible}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════
+     LOGIN SCREEN
+══════════════════════ -->
+<div id="s-login" class="screen active">
+<div class="login-wrap">
+  <header class="login-header">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <path d="M18 5C12 5 8.5 11 10 16C11.5 20.5 15 22.5 18 27C21 22.5 24.5 20.5 26 16C27.5 11 24 5 18 5Z" fill="#1B2A6B" opacity=".12"/>
+      <path d="M12 7C8 10 7.5 16 10.5 19.5C12.5 22 15.5 23 18 27C18 27 14 19.5 15.5 15.5C17 11.5 14.5 7.5 12 7Z" fill="#1B2A6B"/>
+      <path d="M24 7C28 10 28.5 16 25.5 19.5C23.5 22 20.5 23 18 27C18 27 22 19.5 20.5 15.5C19 11.5 21.5 7.5 24 7Z" fill="#1B2A6B" opacity=".6"/>
+      <path d="M14 17.5C12 13 13.5 8.5 17 6.5C14 8 12 12.5 13 16.5C14 20 16.5 22 18 27C16.5 22 15.5 20.5 14 17.5Z" fill="#E8738A"/>
+      <path d="M22 17.5C24 13 22.5 8.5 19 6.5C22 8 24 12.5 23 16.5C22 20 19.5 22 18 27C19.5 22 20.5 20.5 22 17.5Z" fill="#E8738A" opacity=".6"/>
+      <path d="M18 27C16.5 30 15 32.5 13.5 34C15 32.5 16.5 30.5 18 28.5C19.5 30.5 21 32.5 22.5 34C21 32.5 19.5 30 18 27Z" fill="#1B2A6B" opacity=".45"/>
+    </svg>
+    <div>
+      <div class="lh-brand">EMOTIONS<em>.IA</em></div>
+      <div class="lh-sub">HumanWare</div>
+    </div>
+  </header>
+
+  <div class="login-body">
+    <div class="login-card">
+      <!-- STEP 1 -->
+      <div id="ls1" class="login-step active">
+        <div class="step-dots"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div></div>
+        <div class="lc-eyebrow">Bem-vindo</div>
+        <div class="lc-title">Acesse sua<br>plataforma</div>
+        <div class="lc-sub">Desenvolvimento humano potencializado por IA</div>
+
+        <div class="role-pills mb16">
+          <div class="role-pill sel" onclick="selRole(this)">
+            <div class="rp-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="#1B2A6B" stroke-width="1.5"/><path d="M3 18c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="#1B2A6B" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <div class="rp-name">Colaborador</div>
+          </div>
+          <div class="role-pill" onclick="selRole(this)">
+            <div class="rp-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6" r="3" stroke="#1B2A6B" stroke-width="1.5"/><path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#1B2A6B" stroke-width="1.5" stroke-linecap="round"/><path d="M15 11l1.5 1.5L18 11" stroke="#E8738A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <div class="rp-name">Gestor</div>
+          </div>
+          <div class="role-pill" onclick="selRole(this)">
+            <div class="rp-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="12" rx="2" stroke="#1B2A6B" stroke-width="1.5"/><path d="M7 9h6M7 12h4" stroke="#1B2A6B" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <div class="rp-name">RH Admin</div>
+          </div>
+        </div>
+
+        <div class="field-wrap">
+          <label class="field-label">E-mail corporativo</label>
+          <input class="field-input has-val" type="email" value="lucas.mendes@empresa.com">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Senha</label>
+          <div class="pw-wrap">
+            <input class="field-input has-val" id="pwInp" type="password" value="senhasegura">
+            <button class="pw-eye" onclick="togglePw()">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#9CA3AF" stroke-width="1.4"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6z"/><circle cx="10" cy="10" r="2.5"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="forgot-row"><span class="forgot-link">Esqueceu a senha?</span></div>
+
+        <button class="btn-primary" onclick="loginStep(2)">
+          Continuar
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.8"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </button>
+
+        <div class="or-divider">ou acesse com</div>
+        <div class="sso-row">
+          <button class="sso-btn" onclick="loginStep(2)">
+            <svg width="15" height="15" viewBox="0 0 20 20"><path fill="#4285F4" d="M19 10.2c0-.65-.06-1.28-.17-1.88H10v3.56h5.03c-.22 1.14-.87 2.1-1.85 2.75v2.28h3C17.8 15.3 19 12.95 19 10.2z"/><path fill="#34A853" d="M10 19c2.47 0 4.54-.82 6.05-2.21l-2.96-2.3c-.82.55-1.87.88-3.09.88-2.38 0-4.39-1.61-5.11-3.77H1.84v2.38A9 9 0 0 0 10 19z"/><path fill="#FBBC04" d="M4.89 12.6A5.4 5.4 0 0 1 4.6 11c0-.56.1-1.1.29-1.6V7.02H1.84A9 9 0 0 0 1 11c0 1.45.35 2.82.96 4.04L4.89 12.6z"/><path fill="#EA4335" d="M10 4.5c1.34 0 2.54.46 3.49 1.37l2.61-2.61A9 9 0 0 0 1.84 7.02L4.89 9.4C5.61 7.24 7.62 4.5 10 4.5z"/></svg>
+            Google
+          </button>
+          <button class="sso-btn" onclick="loginStep(2)">
+            <svg width="15" height="15" viewBox="0 0 20 20"><path fill="#F25022" d="M1 1h8.5v8.5H1z"/><path fill="#7FBA00" d="M10.5 1H19v8.5h-8.5z"/><path fill="#00A4EF" d="M1 10.5h8.5V19H1z"/><path fill="#FFB900" d="M10.5 10.5H19V19h-8.5z"/></svg>
+            Microsoft
+          </button>
+        </div>
+        <div class="login-footer">Novo? <a onclick="toast('Solicite acesso ao administrador RH','info')">Solicitar acesso</a></div>
+      </div>
+
+      <!-- STEP 2: MFA -->
+      <div id="ls2" class="login-step" style="display:none">
+        <div class="step-dots"><div class="step-dot"></div><div class="step-dot active"></div><div class="step-dot"></div></div>
+        <div class="tc mb16">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--blue-l);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1B2A6B" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          </div>
+          <div class="lc-title" style="font-size:20px">Verificação em 2 etapas</div>
+          <div class="lc-sub">Código enviado para •••• 5847</div>
+        </div>
+        <div class="mfa-grid" id="mfaGrid">
+          <input class="mfa-in filled" value="7" maxlength="1">
+          <input class="mfa-in filled" value="3" maxlength="1">
+          <input class="mfa-in filled" value="9" maxlength="1">
+          <input class="mfa-in" value="" maxlength="1" placeholder="—">
+          <input class="mfa-in" value="" maxlength="1" placeholder="—">
+          <input class="mfa-in" value="" maxlength="1" placeholder="—">
+        </div>
+        <button class="btn-primary mt16" onclick="loginStep(3)">Verificar código</button>
+        <div class="login-footer mt12">Não recebeu? <a onclick="toast('Código reenviado!','success')">Reenviar</a></div>
+      </div>
+
+      <!-- STEP 3: Success -->
+      <div id="ls3" class="login-step" style="display:none">
+        <div class="step-dots"><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot active"></div></div>
+        <div class="tc">
+          <div class="success-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2.2"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div class="lc-title" style="font-size:20px;margin-bottom:6px">Acesso verificado!</div>
+          <div class="lc-sub">Bem-vindo de volta, <strong>Lucas Mendes</strong></div>
+          <div style="margin-bottom:20px"><span class="badge b-navy">Colaborador · SRE Senior</span></div>
+          <button class="btn-primary" onclick="enterApp()">Entrar na plataforma →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════
+     APP SCREEN
+══════════════════════ -->
+<div id="s-app" class="screen">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-top">
+      <div class="sb-logo-mark">
+        <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+          <path d="M18 4C12 4 8.5 10.5 10 16C11.5 21 15 23 18 28C21 23 24.5 21 26 16C27.5 10.5 24 4 18 4Z" fill="#1B2A6B" opacity=".1"/>
+          <path d="M12 6.5C7.5 9.5 7 16 10.5 19.5C12.5 22 15.5 23.5 18 28C18 28 13.5 19.5 15 15.5C16.5 11.5 14 7.5 12 6.5Z" fill="#1B2A6B"/>
+          <path d="M24 6.5C28.5 9.5 29 16 25.5 19.5C23.5 22 20.5 23.5 18 28C18 28 22.5 19.5 21 15.5C19.5 11.5 22 7.5 24 6.5Z" fill="#1B2A6B" opacity=".55"/>
+          <path d="M14 18C11.5 13 13 8.5 17 6.5C13.5 8.5 11.5 13 13 17C14.5 21 17 23 18 28C16.5 22.5 15.5 21 14 18Z" fill="#E8738A"/>
+          <path d="M22 18C24.5 13 23 8.5 19 6.5C22.5 8.5 24.5 13 23 17C21.5 21 19 23 18 28C19.5 22.5 20.5 21 22 18Z" fill="#E8738A" opacity=".55"/>
+          <path d="M18 28C16.5 31 15 33 13.5 35C15 33.5 16.5 31 18 29.5C19.5 31 21 33.5 22.5 35C21 33 19.5 31 18 28Z" fill="#1B2A6B" opacity=".4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="sb-brand">EMOTIONS<em style="color:var(--rose);font-style:normal">.IA</em></div>
+        <div class="sb-tagline">HumanWare</div>
+      </div>
+    </div>
+
+    <nav class="sb-nav">
+      <div class="sb-group">
+        <div class="sb-group-label">Principal</div>
+        <button class="sb-link active" onclick="nav('dashboard',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1.5"/><rect x="9" y="1.5" width="5.5" height="5.5" rx="1.5"/><rect x="1.5" y="9" width="5.5" height="5.5" rx="1.5"/><rect x="9" y="9" width="5.5" height="5.5" rx="1.5"/></svg>
+          Dashboard
+        </button>
+        <button class="sb-link" onclick="nav('perfil',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5.5" r="3"/><path d="M2 14.5c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+          Meu perfil
+        </button>
+        <button class="sb-link" onclick="nav('jornada',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="3" cy="8" r="1.5"/><circle cx="8" cy="4" r="1.5"/><circle cx="13" cy="10" r="1.5"/><path d="M4.5 8c1 0 2-1 3-2M9.5 5c1 1 2 2.5 2 4"/></svg>
+          Minha jornada
+          <span class="sb-badge">3</span>
+        </button>
+      </div>
+      <div class="sb-group">
+        <div class="sb-group-label">Desenvolvimento</div>
+        <button class="sb-link" onclick="nav('competencias',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><polygon points="8,2 14,6 14,10 8,14 2,10 2,6"/><circle cx="8" cy="8" r="2"/></svg>
+          Competências
+        </button>
+        <button class="sb-link" onclick="nav('desafios',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1l2 5h5l-4 3 1.5 5L8 11l-4.5 3L5 9 1 6h5z"/></svg>
+          Desafios &amp; XP
+        </button>
+        <button class="sb-link" onclick="nav('avaliacao',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><path d="M5 8l2.5 2.5L11 5.5"/></svg>
+          Avaliação 360°
+        </button>
+      </div>
+      <div class="sb-group">
+        <div class="sb-group-label">Times &amp; Gestão</div>
+        <button class="sb-link" onclick="nav('squad',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="5" cy="5" r="2"/><circle cx="11" cy="5" r="2"/><path d="M1 14c0-2.2 1.8-4 4-4M11 10c2.2 0 4 1.8 4 4M8 14c0-2.2-1.3-4-3-4.5"/></svg>
+          Squad builder
+        </button>
+        <button class="sb-link" onclick="nav('analytics',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 14V9M6 14V6M10 14V10M14 14V3"/></svg>
+          People analytics
+        </button>
+        <button class="sb-link" onclick="nav('talentos',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7h6M5 10h4"/></svg>
+          Gestão de talentos
+        </button>
+        <button class="sb-link" onclick="nav('ranking',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1l1.5 4h4l-3.3 2.4 1.3 4L8 9l-3.5 2.4 1.3-4L2.5 5h4z"/></svg>
+          Ranking
+        </button>
+      </div>
+      <div class="sb-group">
+        <div class="sb-group-label">IA &amp; Conteúdo</div>
+        <button class="sb-link" onclick="nav('ia_engine',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="10" height="10" rx="2"/><path d="M6 1v2M10 1v2M6 13v2M10 13v2M1 6h2M1 10h2M13 6h2M13 10h2"/></svg>
+          IA Engine
+        </button>
+        <button class="sb-link" onclick="nav('conteudo',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 3h10v10H3z"/><path d="M6 6h4M6 9h3"/></svg>
+          Hub de conteúdo
+        </button>
+      </div>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-user-card" onclick="toast('Configurações do perfil abertas','info')">
+        <div class="av av-32 c-navy">LM</div>
+        <div>
+          <div class="uname">Lucas Mendes</div>
+          <div class="urole">SRE Senior</div>
+        </div>
+        <svg style="margin-left:auto;flex-shrink:0" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#9CA3AF" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-area">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="tb-title" id="tb-title">Dashboard <span class="tb-sub" id="tb-sub">— Bom dia, Lucas</span></div>
+      <button class="tb-btn" onclick="openModal('modal-ai')">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="10" height="10" rx="2"/><path d="M6 1v2M10 1v2M1 6h2M13 6h2M1 10h2M13 10h2M6 13v2M10 13v2"/></svg>
+        Perguntar à IA
+      </button>
+      <button class="tb-btn prim" onclick="toast('Novo desafio desbloqueado! +150 XP disponível','success')">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5"><path d="M8 1v14M1 8h14"/></svg>
+        Novo desafio
+      </button>
+      <div class="notif-btn" onclick="toast('3 novos feedbacks recebidos esta semana','info')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#6B7280" stroke-width="1.4"><path d="M8 1a5 5 0 0 1 5 5v3l1.5 2.5h-13L3 9V6a5 5 0 0 1 5-5z"/><path d="M6 13.5a2 2 0 0 0 4 0"/></svg>
+        <span class="notif-dot"></span>
+      </div>
+    </div>
+
+    <!-- ════ PAGES ════ -->
+    <div class="content">
+
+      <!-- ───── DASHBOARD ───── -->
+      <div id="page-dashboard" class="page active">
+        <div class="kpi-grid fade-up">
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--navy)"></div><div class="kpi-label">Score IA global</div><div class="kpi-val" style="color:var(--navy)">87</div><div class="kpi-delta"><span class="up">↑ +4,2%</span>&nbsp;vs mês anterior</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--green)"></div><div class="kpi-label">XP acumulado</div><div class="kpi-val" style="color:var(--green)">4.820</div><div class="kpi-delta"><span class="up">↑ +320</span>&nbsp;esta semana</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--amber)"></div><div class="kpi-label">Desafios concluídos</div><div class="kpi-val" style="color:var(--amber)">14/18</div><div class="kpi-delta"><span class="up">77,8%</span>&nbsp;de conclusão</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--rose)"></div><div class="kpi-label">Nível de prontidão</div><div class="kpi-val" style="color:var(--rose)">82%</div><div class="kpi-delta"><span class="up">↑ +7pp</span>&nbsp;para liderança</div></div>
+        </div>
+
+        <div class="g-32 mb14 fade-up-1">
+          <!-- Radar -->
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">Pentágono de competências</div><div class="card-sub">Perfil atual vs. perfil ideal — SRE Senior</div></div>
+              <span class="badge b-navy">SRE Senior</span>
+            </div>
+            <div class="flex gap12 ai-c">
+              <svg class="radar-svg" viewBox="0 0 200 200" width="190" height="190" style="flex-shrink:0">
+                <polygon points="100,18 163,56 163,144 100,182 37,144 37,56" fill="none" stroke="#E4E7F0" stroke-width="1"/>
+                <polygon points="100,36 145,62 145,138 100,164 55,138 55,62" fill="none" stroke="#E4E7F0" stroke-width="1"/>
+                <polygon points="100,54 127,68 127,132 100,146 73,132 73,68" fill="none" stroke="#E4E7F0" stroke-width="1"/>
+                <polygon points="100,72 109,78 109,122 100,128 91,122 91,78" fill="none" stroke="#ECEEF5" stroke-width="1"/>
+                <line x1="100" y1="18" x2="100" y2="182" stroke="#ECEEF5" stroke-width="1"/>
+                <line x1="37" y1="56" x2="163" y2="144" stroke="#ECEEF5" stroke-width="1"/>
+                <line x1="163" y1="56" x2="37" y2="144" stroke="#ECEEF5" stroke-width="1"/>
+                <!-- ideal -->
+                <polygon points="100,26 156,60 154,140 100,174 46,138 48,58" fill="rgba(27,42,107,.05)" stroke="#1B2A6B" stroke-width="1.2" stroke-dasharray="4,3"/>
+                <!-- real -->
+                <polygon points="100,34 148,67 146,133 100,168 54,132 56,65" fill="rgba(232,115,138,.13)" stroke="#E8738A" stroke-width="2"/>
+                <circle cx="100" cy="34" r="3.5" fill="#E8738A"/>
+                <circle cx="148" cy="67" r="3.5" fill="#E8738A"/>
+                <circle cx="146" cy="133" r="3.5" fill="#E8738A"/>
+                <circle cx="100" cy="168" r="3.5" fill="#E8738A"/>
+                <circle cx="54" cy="132" r="3.5" fill="#E8738A"/>
+                <circle cx="56" cy="65" r="3.5" fill="#E8738A"/>
+                <text x="100" y="12" text-anchor="middle" font-size="9.5" font-family="DM Sans" fill="#8B90A8">Comunicação</text>
+                <text x="172" y="60" text-anchor="start" font-size="9.5" font-family="DM Sans" fill="#8B90A8">Liderança</text>
+                <text x="172" y="148" text-anchor="start" font-size="9.5" font-family="DM Sans" fill="#8B90A8">Execução</text>
+                <text x="100" y="194" text-anchor="middle" font-size="9.5" font-family="DM Sans" fill="#8B90A8">Empatia</text>
+                <text x="27" y="148" text-anchor="end" font-size="9.5" font-family="DM Sans" fill="#8B90A8">Inovação</text>
+                <text x="27" y="60" text-anchor="end" font-size="9.5" font-family="DM Sans" fill="#8B90A8">Adaptab.</text>
+              </svg>
+              <div style="flex:1">
+                <div class="sr"><div class="sr-lbl">Comunicação</div><div class="sr-track"><div class="sr-fill" style="width:88%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">88</div></div>
+                <div class="sr"><div class="sr-lbl">Liderança</div><div class="sr-track"><div class="sr-fill" style="width:76%;background:var(--rose)"></div></div><div class="sr-num" style="color:var(--rose)">76</div></div>
+                <div class="sr"><div class="sr-lbl">Resolução</div><div class="sr-track"><div class="sr-fill" style="width:91%;background:var(--green)"></div></div><div class="sr-num" style="color:var(--green)">91</div></div>
+                <div class="sr"><div class="sr-lbl">Empatia</div><div class="sr-track"><div class="sr-fill" style="width:82%;background:#993556"></div></div><div class="sr-num" style="color:#993556">82</div></div>
+                <div class="sr"><div class="sr-lbl">Adaptabilidade</div><div class="sr-track"><div class="sr-fill" style="width:85%;background:var(--amber)"></div></div><div class="sr-num" style="color:var(--amber)">85</div></div>
+                <div class="sr" style="margin-bottom:0"><div class="sr-lbl">Inovação</div><div class="sr-track"><div class="sr-fill" style="width:79%;background:#185FA5"></div></div><div class="sr-num" style="color:#185FA5">79</div></div>
+                <div class="flex gap10 mt12">
+                  <div class="flex ai-c gap6 fs11 muted"><div style="width:14px;height:1px;border-top:1.5px dashed var(--navy)"></div>Ideal</div>
+                  <div class="flex ai-c gap6 fs11 muted"><div style="width:14px;height:2px;background:var(--rose);border-radius:1px"></div>Atual</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right column -->
+          <div class="flex" style="flex-direction:column;gap:14px">
+            <div class="card">
+              <div class="card-head" style="margin-bottom:10px">
+                <div><div class="card-title">Insight IA — hoje</div><div class="card-sub" style="margin-bottom:0">NLP + Random Forest · 94% confiança</div></div>
+              </div>
+              <div class="ia-box">
+                <div class="ia-dot green"></div>
+                <div class="ia-text">Linguagem colaborativa <strong>+12%</strong> esta semana. Progresso direto em Trabalho em Equipe — continue nas dailies.</div>
+              </div>
+              <div class="ia-box" style="background:#FFF5F7;border-color:#F4C0D1;margin-bottom:0">
+                <div class="ia-dot rose"></div>
+                <div class="ia-text">Gap em <strong>Liderança Técnica (76/90)</strong>. Facilitar 3 reuniões aumentará +8 pts. PDI atualizado automaticamente.</div>
+              </div>
+            </div>
+            <div class="card" style="flex:1">
+              <div class="card-head" style="margin-bottom:10px">
+                <div class="card-title">Evolução trimestral</div>
+                <span class="badge b-green">↑ +29 pts</span>
+              </div>
+              <div class="bar-chart">
+                <div class="bar-col"><div class="bar-col-fill" style="height:38%;background:#D0D9F5;border-radius:4px 4px 0 0"></div><div class="bar-lbl">Jan</div></div>
+                <div class="bar-col"><div class="bar-col-fill" style="height:47%;background:#C5CAE9"></div><div class="bar-lbl">Fev</div></div>
+                <div class="bar-col"><div class="bar-col-fill" style="height:55%;background:#B0BAE0"></div><div class="bar-lbl">Mar</div></div>
+                <div class="bar-col"><div class="bar-col-fill" style="height:63%;background:#9BAAD8"></div><div class="bar-lbl">Abr</div></div>
+                <div class="bar-col"><div class="bar-col-fill" style="height:70%;background:#7A8FCC"></div><div class="bar-lbl">Mai</div></div>
+                <div class="bar-col"><div class="bar-col-fill" style="height:80%;background:#4A6BBF"></div><div class="bar-lbl">Jun</div></div>
+                <div class="bar-col"><div class="bar-col-fill" style="height:92%;background:var(--navy)"></div><div class="bar-lbl">Jul</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="g3 fade-up-2">
+          <!-- 360 -->
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">Avaliação 360°</div><div class="card-sub">Ciclo Q3 — 5 avaliadores</div></div>
+              <button class="tb-btn" style="font-size:11px;padding:5px 10px" onclick="nav('avaliacao',null)">Ver detalhes</button>
+            </div>
+            <div class="sr"><div class="sr-lbl">Comunicação</div><div class="sr-track"><div class="sr-fill" style="width:90%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">9.0</div></div>
+            <div class="sr"><div class="sr-lbl">Colaboração</div><div class="sr-track"><div class="sr-fill" style="width:85%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">8.5</div></div>
+            <div class="sr"><div class="sr-lbl">Proatividade</div><div class="sr-track"><div class="sr-fill" style="width:88%;background:var(--green)"></div></div><div class="sr-num" style="color:var(--green)">8.8</div></div>
+            <div class="sr"><div class="sr-lbl">Liderança</div><div class="sr-track"><div class="sr-fill" style="width:76%;background:var(--rose)"></div></div><div class="sr-num" style="color:var(--rose)">7.6</div></div>
+            <div class="sr" style="margin-bottom:12px"><div class="sr-lbl">Empatia</div><div class="sr-track"><div class="sr-fill" style="width:82%;background:#993556"></div></div><div class="sr-num" style="color:#993556">8.2</div></div>
+            <div class="peer-card">
+              <div class="peer-head"><div class="av av-24 c-rose">AC</div><div class="fs12 fw6 navy" style="flex:1">Ana Costa</div><div class="fs11 muted">2d atrás</div></div>
+              <div class="peer-msg">"Liderança calma e objetiva no incidente de produção. Referência do time."</div>
+            </div>
+          </div>
+
+          <!-- Desafios -->
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">Desafios ativos</div><div class="card-sub">Missões geradas pela IA</div></div>
+              <button class="tb-btn" style="font-size:11px;padding:5px 10px" onclick="nav('desafios',null)">Ver todos</button>
+            </div>
+            <div class="stack">
+              <div class="ch-card" onclick="toast('Desafio aceito! Prazo: 30 dias. +150 XP na conclusão','success')">
+                <div class="ch-icon" style="background:var(--blue-l)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#1B2A6B" stroke-width="1.5"><path d="M8 1v14M1 5h5M1 9h5M10 5l4 3-4 3"/></svg></div>
+                <div class="ch-title">Lidere 3 reuniões técnicas</div>
+                <div class="ch-desc">Facilite encontros para ampliar Comunicação Assertiva</div>
+                <div class="prog-bar-sm"><div class="prog-fill-sm" style="width:33%;background:var(--navy)"></div></div>
+                <div class="flex ai-c gap6"><span class="xp-tag">⚡ 150 XP</span><span class="badge b-amber" style="font-size:9px">1/3</span></div>
+              </div>
+              <div class="ch-card" onclick="toast('Desafio iniciado! Acompanhe o progresso em Desafios','success')">
+                <div class="ch-icon" style="background:var(--green-l)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#0F6E56" stroke-width="1.5"><circle cx="6" cy="5" r="2.5"/><path d="M2 14c0-2.2 1.8-4 4-4s4 1.8 4 4"/><path d="M12 7v6M9 10h6"/></svg></div>
+                <div class="ch-title">Mentore um colega júnior</div>
+                <div class="ch-desc">2 semanas de acompanhamento com feedbacks estruturados</div>
+                <div class="prog-bar-sm"><div class="prog-fill-sm" style="width:0%;background:var(--green)"></div></div>
+                <div class="flex ai-c gap6"><span class="xp-tag">⚡ 200 XP</span><span class="badge b-green" style="font-size:9px">Novo</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jornada / PDI -->
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">Minha jornada</div><div class="card-sub">Marcos e PDI ativo</div></div>
+              <span class="badge b-navy">3a 4m</span>
+            </div>
+            <div class="tl-wrap mb12">
+              <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Mar 2022</div><div class="tl-title">Engenheiro Jr.</div><div class="tl-desc">Onboarding e primeiras contribuições</div></div>
+              <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Jan 2023</div><div class="tl-title">Promovido para Pleno</div><div class="tl-desc">Score IA 82 — destaque em Resolução</div></div>
+              <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Mar 2024</div><div class="tl-title">Promovido para Senior</div><div class="tl-desc">Score IA 87 — todas as competências</div></div>
+              <div class="tl-item" style="margin-bottom:0"><div class="tl-dot next"></div><div class="tl-date">Meta</div><div class="tl-title" style="color:var(--rose)">Tech Lead — em desenvolvimento</div><div class="tl-desc">Faltam 14pts de Liderança. PDI ativo.</div></div>
+            </div>
+            <div style="border-top:1px solid var(--border);padding-top:12px">
+              <div class="fs11 fw6 navy" style="text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">PDI ativo</div>
+              <div class="stack">
+                <div class="flex ai-c gap8" style="padding:8px;background:var(--bg);border-radius:var(--r8);cursor:pointer" onclick="toast('Trilha aberta: módulo 3 de 8','info')">
+                  <div style="width:26px;height:26px;border-radius:6px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--navy)" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7h6M5 10h4"/></svg></div>
+                  <div style="flex:1;min-width:0"><div class="fs12 fw5 navy" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Da Influência à Liderança</div><div class="fs11 muted">8 módulos · 4h</div></div>
+                  <span class="badge b-navy" style="font-size:9px;flex-shrink:0">Ativo</span>
+                </div>
+                <div class="flex ai-c gap8" style="padding:8px;background:var(--bg);border-radius:var(--r8);cursor:pointer" onclick="toast('Mentoria agendada para sexta-feira','success')">
+                  <div style="width:26px;height:26px;border-radius:6px;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--green)" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg></div>
+                  <div style="flex:1"><div class="fs12 fw5 navy">Mentoria — Ana Costa</div><div class="fs11 muted">Quinzenal · Liderança técnica</div></div>
+                  <span class="badge b-green" style="font-size:9px;flex-shrink:0">Agenda</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── PERFIL ───── -->
+      <div id="page-perfil" class="page">
+        <div class="g2 mb14">
+          <div class="card">
+            <div class="flex ai-c gap12 mb16" style="padding-bottom:16px;border-bottom:1px solid var(--border)">
+              <div class="av av-48 c-navy">LM</div>
+              <div style="flex:1">
+                <div style="font-family:var(--fh);font-size:20px;font-weight:800;color:var(--navy)">Lucas Mendes</div>
+                <div class="fs13 muted">Engenheiro de Software Senior</div>
+                <div class="flex gap6 mt8"><span class="badge b-navy">Engenharia</span><span class="badge b-green">3 anos 4 meses</span></div>
+              </div>
+              <button class="tb-btn" onclick="toast('Editor de perfil aberto','info')">Editar</button>
+            </div>
+            <div class="g2" style="gap:8px;margin-bottom:14px">
+              <div style="padding:10px;background:var(--bg);border-radius:var(--r8)"><div class="fs11 muted mb8">Departamento</div><div class="fs12 fw5">Engenharia · Backend</div></div>
+              <div style="padding:10px;background:var(--bg);border-radius:var(--r8)"><div class="fs11 muted mb8">Senioridade</div><div class="fs12 fw5">Senior (SRE L5)</div></div>
+              <div style="padding:10px;background:var(--bg);border-radius:var(--r8)"><div class="fs11 muted mb8">Cargo desejado</div><div class="fs12 fw5" style="color:var(--rose)">Tech Lead</div></div>
+              <div style="padding:10px;background:var(--bg);border-radius:var(--r8)"><div class="fs11 muted mb8">Score IA</div><div class="fs12 fw6" style="color:var(--amber)">87 / 100</div></div>
+            </div>
+            <div class="mb12"><div class="fs12 muted mb8">Hard skills</div><div class="flex wrap gap6"><span class="badge b-gray">Python</span><span class="badge b-gray">Kubernetes</span><span class="badge b-gray">AWS</span><span class="badge b-gray">Go</span><span class="badge b-gray">Terraform</span></div></div>
+            <div><div class="fs12 muted mb8">Soft skills autodeclaradas</div><div class="flex wrap gap6"><span class="badge b-navy">Resolução de problemas</span><span class="badge b-navy">Comunicação</span><span class="badge b-amber">Adaptabilidade</span></div></div>
+          </div>
+          <div class="card">
+            <div class="card-title mb8">Currículo &amp; portfólio IA</div>
+            <div style="background:linear-gradient(135deg,#F0F4FF,#FBE9ED);border:1.5px dashed var(--border2);border-radius:var(--r12);padding:20px;text-align:center;margin-bottom:14px;cursor:pointer" onclick="toast('Upload processado! IA extraiu 18 competências','success')">
+              <svg style="margin:0 auto 8px;display:block" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <div class="fs13 fw5 navy">Atualizar currículo</div>
+              <div class="fs12 muted">PDF ou DOCX — IA extrai skills automaticamente</div>
+            </div>
+            <div class="stack">
+              <div class="flex ai-c gap10 p10" style="padding:10px;background:var(--bg);border-radius:var(--r8);cursor:pointer" onclick="toast('Projeto expandido no portfólio','info')">
+                <span style="font-size:18px">🚀</span>
+                <div style="flex:1"><div class="fs12 fw5">Migração Microserviços Cloud</div><div class="fs11 muted">Liderou squad de 6 · 2023</div></div>
+                <span class="badge b-green" style="font-size:9px">Liderança detectada</span>
+              </div>
+              <div class="flex ai-c gap10" style="padding:10px;background:var(--bg);border-radius:var(--r8);cursor:pointer" onclick="toast('Projeto expandido no portfólio','info')">
+                <span style="font-size:18px">⚡</span>
+                <div style="flex:1"><div class="fs12 fw5">Redução de latência 60ms → 8ms</div><div class="fs11 muted">Arquitetura · 2024</div></div>
+                <span class="badge b-amber" style="font-size:9px">Inovação detectada</span>
+              </div>
+            </div>
+            <div class="ia-box mt12" style="margin-bottom:0">
+              <div class="ia-dot"></div>
+              <div class="ia-text">NLP detectou: <strong>Resiliência · Gestão de Pressão · Pensamento Sistêmico</strong> na descrição narrativa do perfil.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── JORNADA ───── -->
+      <div id="page-jornada" class="page">
+        <div class="g2 mb14">
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Linha do tempo</div><div class="card-sub">Marcos da trajetória na empresa</div></div><span class="badge b-navy">3 anos 4 meses</span></div>
+            <div class="tl-wrap">
+              <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Mar 2022 · Entrada</div><div class="tl-title">Engenheiro de Software Jr.</div><div class="tl-desc">Onboarding concluído. Primeiras contribuições no repositório interno.</div></div>
+              <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Set 2022 · Conquista</div><div class="tl-title">Badge: Fast Learner</div><div class="tl-desc">Domínio de Kubernetes em 60 dias. IA identificou padrão de aprendizado acelerado.</div></div>
+              <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Jan 2023 · Promoção</div><div class="tl-title">Promovido para Pleno</div><div class="tl-desc">Score IA 82. Destaque em Resolução de Problemas Complexos.</div></div>
+              <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Jun 2023 · Projeto</div><div class="tl-title">Liderou migração cloud</div><div class="tl-desc">Coordenou squad de 6 pessoas. Entrega 3 semanas antes do prazo.</div></div>
+              <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Mar 2024 · Promoção</div><div class="tl-title">Promovido para Senior</div><div class="tl-desc">Score IA 87. Reconhecimento em todas as 5 competências HumanWare.</div></div>
+              <div class="tl-item" style="margin-bottom:0"><div class="tl-dot next"></div><div class="tl-date">Meta próxima</div><div class="tl-title" style="color:var(--rose)">Tech Lead — em desenvolvimento</div><div class="tl-desc">Faltam 14 pontos de Liderança. PDI ativo com 3 ações prioritárias.</div></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="card">
+              <div class="card-title mb12">PDI — Plano de Desenvolvimento</div>
+              <div class="stack">
+                <div style="background:var(--bg);border-radius:var(--r12);padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="toast('Trilha iniciada! Módulo 3 desbloqueado','info')">
+                  <div style="width:36px;height:36px;border-radius:var(--r8);background:var(--blue-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--navy)" stroke-width="1.4"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7h6M5 10h4"/></svg></div>
+                  <div style="flex:1"><div class="fs13 fw5 navy">Da Influência à Liderança</div><div class="fs11 muted">8 módulos · 4h estimadas</div></div>
+                  <span class="badge b-navy">Ativo</span>
+                </div>
+                <div style="background:var(--bg);border-radius:var(--r12);padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="toast('Mentoria agendada para sexta-feira','success')">
+                  <div style="width:36px;height:36px;border-radius:var(--r8);background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--green)" stroke-width="1.4"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg></div>
+                  <div style="flex:1"><div class="fs13 fw5 navy">Mentoria com Ana Costa</div><div class="fs11 muted">Quinzenal · Liderança técnica</div></div>
+                  <span class="badge b-green">Agenda</span>
+                </div>
+                <div style="background:var(--bg);border-radius:var(--r12);padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="toast('Workshop adicionado ao calendário','info')">
+                  <div style="width:36px;height:36px;border-radius:var(--r8);background:var(--amber-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.4"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1z"/><path d="M8 5v3l2 2"/></svg></div>
+                  <div style="flex:1"><div class="fs13 fw5 navy">Workshop: Comunicação em Crises</div><div class="fs11 muted">15 Ago · 3h · Presencial</div></div>
+                  <span class="badge b-amber">Em breve</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title mb12">Resumo de impacto — IA</div>
+              <div class="ia-box" style="margin-bottom:0">
+                <div class="ia-dot"></div>
+                <div class="ia-text" style="font-style:italic;line-height:1.7">"Lucas construiu uma trajetória de evolução contínua. Em 3 anos, passou de contribuidor individual a referência técnica do time. Sua principal força reside em Resolução de Problemas Complexos e Adaptabilidade."<div class="mt8" style="font-style:normal;font-size:10px;color:var(--ink4)">Gerado por Emotions.IA · HumanWare · jul 2025</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── COMPETÊNCIAS ───── -->
+      <div id="page-competencias" class="page">
+        <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:14px;margin-bottom:14px">
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Eixos HumanWare</div><div class="card-sub">Ideias · Social · Trabalho — metodologia científica</div></div><button class="tb-btn" style="font-size:11px;padding:5px 10px" onclick="openModal('modal-ai')">Ver análise IA</button></div>
+            <div class="g3" style="gap:10px;margin-bottom:14px">
+              <div class="hw-pillar" style="border-color:#D0D9F5"><div class="hw-label" style="color:var(--navy)">💡 Eixo Ideias</div>
+                <div class="sr"><div class="sr-lbl" style="width:90px">Criatividade</div><div class="sr-track"><div class="sr-fill" style="width:84%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">84</div></div>
+                <div class="sr"><div class="sr-lbl" style="width:90px">Inovação</div><div class="sr-track"><div class="sr-fill" style="width:79%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">79</div></div>
+                <div class="sr" style="margin-bottom:0"><div class="sr-lbl" style="width:90px">Pens. crítico</div><div class="sr-track"><div class="sr-fill" style="width:92%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">92</div></div>
+              </div>
+              <div class="hw-pillar" style="border-color:#F4C0D1"><div class="hw-label" style="color:#993556">🤝 Eixo Social</div>
+                <div class="sr"><div class="sr-lbl" style="width:90px">Comunicação</div><div class="sr-track"><div class="sr-fill" style="width:88%;background:var(--rose)"></div></div><div class="sr-num" style="color:var(--rose)">88</div></div>
+                <div class="sr"><div class="sr-lbl" style="width:90px">Empatia</div><div class="sr-track"><div class="sr-fill" style="width:82%;background:var(--rose)"></div></div><div class="sr-num" style="color:var(--rose)">82</div></div>
+                <div class="sr" style="margin-bottom:0"><div class="sr-lbl" style="width:90px">Liderança</div><div class="sr-track"><div class="sr-fill" style="width:76%;background:#E8738A99"></div></div><div class="sr-num" style="color:var(--amber)">76</div></div>
+              </div>
+              <div class="hw-pillar" style="border-color:#F5C4B3"><div class="hw-label" style="color:var(--amber)">⚙️ Eixo Trabalho</div>
+                <div class="sr"><div class="sr-lbl" style="width:90px">Organização</div><div class="sr-track"><div class="sr-fill" style="width:91%;background:var(--amber)"></div></div><div class="sr-num" style="color:var(--amber)">91</div></div>
+                <div class="sr"><div class="sr-lbl" style="width:90px">Adaptabilidade</div><div class="sr-track"><div class="sr-fill" style="width:85%;background:var(--amber)"></div></div><div class="sr-num" style="color:var(--amber)">85</div></div>
+                <div class="sr" style="margin-bottom:0"><div class="sr-lbl" style="width:90px">Resolução</div><div class="sr-track"><div class="sr-fill" style="width:91%;background:var(--green)"></div></div><div class="sr-num" style="color:var(--green)">91</div></div>
+              </div>
+            </div>
+            <div class="ia-box" style="margin-bottom:0">
+              <div class="ia-dot"></div>
+              <div class="ia-text">Você está a <strong>14 pontos</strong> do perfil ideal para <strong style="color:var(--navy)">Tech Lead Senior</strong>. O gap principal é Liderança (76/90). Trilha <em>"Da Influência à Liderança"</em> foi ativada automaticamente no PDI.</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title mb12">Badges conquistados</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:24px;margin-bottom:4px">🎯</div><div class="fs11 muted">Resolvedor</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:24px;margin-bottom:4px">⚡</div><div class="fs11 muted">Fast Learn</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:24px;margin-bottom:4px">🧠</div><div class="fs11 muted">Inovador</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:24px;margin-bottom:4px">🌟</div><div class="fs11 muted">Top Collab</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8);border:1.5px dashed var(--border2);opacity:.5"><div style="font-size:24px;margin-bottom:4px">👑</div><div class="fs11 muted">Líder</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8);border:1.5px dashed var(--border2);opacity:.5"><div style="font-size:24px;margin-bottom:4px">🏆</div><div class="fs11 muted">MVP</div></div>
+            </div>
+            <div class="fs11 muted mb8">Nível de XP</div>
+            <div class="flex ai-c gap8 mb8">
+              <div style="flex:1;height:8px;background:var(--bg2);border-radius:4px;overflow:hidden"><div style="width:73%;height:100%;background:var(--navy);border-radius:4px"></div></div>
+              <div class="fs12 fw6" style="color:var(--amber)">4820 / 6600</div>
+            </div>
+            <div class="fs11 muted">Nível 8 → Nível 9 faltam 1780 XP</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── DESAFIOS ───── -->
+      <div id="page-desafios" class="page">
+        <div class="kpi-grid mb14">
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--green)"></div><div class="kpi-label">XP total</div><div class="kpi-val" style="color:var(--green)">4.820</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--amber)"></div><div class="kpi-label">Nível atual</div><div class="kpi-val" style="color:var(--amber)">8</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--navy)"></div><div class="kpi-label">Concluídos</div><div class="kpi-val" style="color:var(--navy)">14</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--rose)"></div><div class="kpi-label">Streak</div><div class="kpi-val" style="color:var(--rose)">12 dias</div></div>
+        </div>
+        <div class="g3">
+          <div class="ch-card" onclick="toast('Desafio iniciado! Prazo: 30 dias','success')"><div class="ch-icon" style="background:var(--blue-l)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="var(--navy)" stroke-width="1.5"><path d="M8 1v14M1 5h5M10 5l4 3-4 3"/></svg></div><div class="ch-title">Lidere 3 reuniões técnicas</div><div class="ch-desc">Facilite encontros com 5+ participantes cada para ampliar Comunicação Assertiva</div><div class="prog-bar-sm"><div class="prog-fill-sm" style="width:33%;background:var(--navy)"></div></div><div class="flex ai-c gap6"><span class="xp-tag">⚡ 150 XP</span><span class="badge b-amber" style="font-size:9px">1/3</span></div></div>
+          <div class="ch-card" onclick="toast('Desafio iniciado! +200 XP na conclusão','success')"><div class="ch-icon" style="background:var(--green-l)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="var(--green)" stroke-width="1.5"><circle cx="6" cy="5" r="2.5"/><path d="M2 14c0-2.2 1.8-4 4-4"/><path d="M12 7v6M9 10h6"/></svg></div><div class="ch-title">Mentore um colega júnior</div><div class="ch-desc">2 semanas de acompanhamento com feedbacks semanais pelo método SBI</div><div class="prog-bar-sm"><div class="prog-fill-sm" style="width:0%;background:var(--green)"></div></div><div class="flex ai-c gap6"><span class="xp-tag">⚡ 200 XP</span><span class="badge b-green" style="font-size:9px">Novo</span></div></div>
+          <div class="ch-card" onclick="toast('Desafio iniciado! +80 XP','success')"><div class="ch-icon" style="background:var(--amber-l)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5"><path d="M8 1l2 5h5l-4 3 1.5 5L8 11l-4.5 3L5 9 1 6h5z"/></svg></div><div class="ch-title">Proponha uma melhoria de processo</div><div class="ch-desc">Documente e apresente ao time uma proposta com dados e indicadores</div><div class="prog-bar-sm"><div class="prog-fill-sm" style="width:0%;background:var(--amber)"></div></div><div class="flex ai-c gap6"><span class="xp-tag">⚡ 80 XP</span><span class="badge b-gray" style="font-size:9px">Pendente</span></div></div>
+          <div class="ch-card" style="opacity:.8" onclick="toast('Desafio concluído! +120 XP conquistados','success')"><div class="ch-icon" style="background:var(--green-l)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="var(--green)" stroke-width="1.5"><path d="M3 9l3.5 3.5L13 5"/></svg></div><div class="ch-title">Dê feedback estruturado</div><div class="ch-desc">Utilize o modelo SBI para dar feedback a 3 colegas diferentes</div><div class="prog-bar-sm"><div class="prog-fill-sm" style="width:100%;background:var(--green)"></div></div><div class="flex ai-c gap6"><span class="xp-tag">⚡ 120 XP</span><span class="badge b-green" style="font-size:9px">Completo ✓</span></div></div>
+          <div class="ch-card" onclick="toast('Desafio ativado! +180 XP','success')"><div class="ch-icon" style="background:var(--rose-xl)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="var(--rose)" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3M8 11v.5"/></svg></div><div class="ch-title">Gestão emocional em crise</div><div class="ch-desc">Durante um incidente técnico, mantenha comunicação calma e objetiva</div><div class="prog-bar-sm"><div class="prog-fill-sm" style="width:0%;background:var(--rose)"></div></div><div class="flex ai-c gap6"><span class="xp-tag">⚡ 180 XP</span><span class="badge b-gray" style="font-size:9px">Pendente</span></div></div>
+          <div class="ch-card" onclick="toast('Trilha iniciada! Boa leitura','info')"><div class="ch-icon" style="background:#EEF3FF"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#185FA5" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 6h6M5 9h4"/></svg></div><div class="ch-title">Microlearning: Inteligência Social</div><div class="ch-desc">Módulo "Neurociência das Relações" — 45 min de conteúdo prático</div><div class="prog-bar-sm"><div class="prog-fill-sm" style="width:60%;background:#185FA5"></div></div><div class="flex ai-c gap6"><span class="xp-tag">⚡ 60 XP</span><span class="badge b-navy" style="font-size:9px">60% lido</span></div></div>
+        </div>
+      </div>
+
+      <!-- ───── AVALIAÇÃO 360 ───── -->
+      <div id="page-avaliacao" class="page">
+        <div class="g2 mb14">
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Avaliação 360° — Ciclo Q3 2025</div><div class="card-sub">Triangulação: Autoavaliação · Pares · Líder direto</div></div><span class="badge b-navy">5 avaliadores</span></div>
+            <div class="g3" style="gap:10px;margin-bottom:14px">
+              <div style="padding:12px;background:var(--blue-l);border-radius:var(--r12)">
+                <div class="fs11 fw6 navy" style="text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Autoavaliação</div>
+                <div class="sr"><div class="sr-lbl" style="width:80px">Comunicação</div><div class="sr-track"><div class="sr-fill" style="width:85%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">8.5</div></div>
+                <div class="sr"><div class="sr-lbl" style="width:80px">Liderança</div><div class="sr-track"><div class="sr-fill" style="width:80%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">8.0</div></div>
+                <div class="sr" style="margin-bottom:0"><div class="sr-lbl" style="width:80px">Empatia</div><div class="sr-track"><div class="sr-fill" style="width:88%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">8.8</div></div>
+              </div>
+              <div style="padding:12px;background:var(--green-l);border-radius:var(--r12)">
+                <div class="fs11 fw6" style="color:var(--green);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Avaliação pares</div>
+                <div class="sr"><div class="sr-lbl" style="width:80px">Comunicação</div><div class="sr-track"><div class="sr-fill" style="width:90%;background:var(--green)"></div></div><div class="sr-num" style="color:var(--green)">9.0</div></div>
+                <div class="sr"><div class="sr-lbl" style="width:80px">Liderança</div><div class="sr-track"><div class="sr-fill" style="width:74%;background:var(--green)"></div></div><div class="sr-num" style="color:var(--amber)">7.4</div></div>
+                <div class="sr" style="margin-bottom:0"><div class="sr-lbl" style="width:80px">Empatia</div><div class="sr-track"><div class="sr-fill" style="width:82%;background:var(--green)"></div></div><div class="sr-num" style="color:var(--green)">8.2</div></div>
+              </div>
+              <div style="padding:12px;background:var(--amber-l);border-radius:var(--r12)">
+                <div class="fs11 fw6" style="color:var(--amber);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Líder direto</div>
+                <div class="sr"><div class="sr-lbl" style="width:80px">Comunicação</div><div class="sr-track"><div class="sr-fill" style="width:86%;background:var(--amber)"></div></div><div class="sr-num" style="color:var(--amber)">8.6</div></div>
+                <div class="sr"><div class="sr-lbl" style="width:80px">Liderança</div><div class="sr-track"><div class="sr-fill" style="width:78%;background:var(--amber)"></div></div><div class="sr-num" style="color:var(--amber)">7.8</div></div>
+                <div class="sr" style="margin-bottom:0"><div class="sr-lbl" style="width:80px">Empatia</div><div class="sr-track"><div class="sr-fill" style="width:84%;background:var(--amber)"></div></div><div class="sr-num" style="color:var(--amber)">8.4</div></div>
+              </div>
+            </div>
+            <div class="ia-box"><div class="ia-dot rose"></div><div class="ia-text">Sua <strong>autoavaliação de Liderança (8.0)</strong> é consistentemente acima da percepção dos pares (7.4). Isso indica um possível <em>blind spot</em>. A IA recomenda conversa de feedback com o líder direto.</div></div>
+            <div class="ia-box" style="margin-bottom:0"><div class="ia-dot green"></div><div class="ia-text">Sua <strong>Comunicação</strong> foi avaliada acima da sua autopercepção por pares e líder. Sinal positivo de reconhecimento externo — continue investindo.</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="card">
+              <div class="card-title mb12">Feedbacks recebidos</div>
+              <div class="stack">
+                <div class="peer-card"><div class="peer-head"><div class="av av-24 c-rose">AC</div><div class="fs12 fw6 navy" style="flex:1">Ana Costa</div><div class="fs11 muted">2d</div></div><div class="peer-msg">"Liderança calma no incidente. Referência do time."</div><div class="mt8"><span class="badge b-green" style="font-size:9px">Trabalho em Equipe</span></div></div>
+                <div class="peer-card"><div class="peer-head"><div class="av av-24 c-teal">TS</div><div class="fs12 fw6 navy" style="flex:1">Thiago Santos</div><div class="fs11 muted">5d</div></div><div class="peer-msg">"Sempre disposto a explicar. Fez diferença na minha curva de aprendizado."</div><div class="mt8"><span class="badge b-navy" style="font-size:9px">Mentoria</span></div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title mb8">Novo ciclo pendente</div>
+              <div class="fs13 muted mb12" style="line-height:1.5">Você tem 2 solicitações de avaliação pendentes. Seu feedback impacta diretamente o PDI dos colegas.</div>
+              <div class="stack">
+                <button class="btn-primary" onclick="toast('Avaliação de Ana Costa iniciada. Tempo: ~8 min','info')">Avaliar Ana Costa →</button>
+                <button class="tb-btn" style="width:100%;justify-content:center;height:42px" onclick="toast('Avaliação de Rafael Pinto iniciada. Tempo: ~8 min','info')">Avaliar Rafael Pinto →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── SQUAD BUILDER ───── -->
+      <div id="page-squad" class="page">
+        <div class="g2 mb14">
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Composição do squad</div><div class="card-sub">IA sugere combinação ideal de perfis comportamentais</div></div><button class="btn-primary" style="padding:7px 16px;border-radius:var(--r8);font-size:12px;font-family:var(--fb);height:auto" onclick="toast('Squad salvo! Compatibilidade: 94%','success')">Salvar squad</button></div>
+            <div class="g3" style="margin-bottom:14px">
+              <div class="squad-slot" onclick="openModal('modal-member')"><div class="av av-40 c-navy" style="margin:0 auto">LM</div><div class="squad-slot-name">Lucas Mendes</div><div class="squad-slot-role">Resolvedor</div><div style="margin-top:6px"><span class="badge b-navy" style="font-size:9px">Score 87</span></div></div>
+              <div class="squad-slot" onclick="openModal('modal-member')"><div class="av av-40 c-rose" style="margin:0 auto">AC</div><div class="squad-slot-name">Ana Costa</div><div class="squad-slot-role">Comunicadora</div><div style="margin-top:6px"><span class="badge b-rose" style="font-size:9px">Score 92</span></div></div>
+              <div class="squad-slot" onclick="openModal('modal-member')"><div class="av av-40 c-amber" style="margin:0 auto">RP</div><div class="squad-slot-name">Rafael Pinto</div><div class="squad-slot-role">Executor</div><div style="margin-top:6px"><span class="badge b-amber" style="font-size:9px">Score 84</span></div></div>
+              <div class="squad-slot" onclick="openModal('modal-member')"><div class="av av-40 c-blue" style="margin:0 auto">MO</div><div class="squad-slot-name">Mariana Oliveira</div><div class="squad-slot-role">Inovadora</div><div style="margin-top:6px"><span class="badge b-navy" style="font-size:9px">Score 89</span></div></div>
+              <div class="squad-slot" onclick="openModal('modal-member')"><div class="av av-40 c-teal" style="margin:0 auto">TS</div><div class="squad-slot-name">Thiago Santos</div><div class="squad-slot-role">Conector</div><div style="margin-top:6px"><span class="badge b-green" style="font-size:9px">Score 81</span></div></div>
+              <div class="squad-slot" style="border-style:dashed" onclick="toast('IA buscando perfil complementar...','info')"><div class="av av-40" style="background:var(--bg2);margin:0 auto"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--ink4)" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg></div><div class="squad-slot-name" style="color:var(--ink3)">Adicionar</div><div class="squad-slot-role" style="color:var(--ink4)">Sugerir via IA</div></div>
+            </div>
+            <div style="background:linear-gradient(135deg,var(--blue-l),#F0F8F4);border:1px solid var(--border2);border-radius:var(--r12);padding:14px">
+              <div class="flex ai-c jb mb10"><div class="fs13 fw6 navy">Análise de compatibilidade</div><div style="font-family:var(--fh);font-size:24px;font-weight:800;color:var(--green)">94%</div></div>
+              <div class="sr"><div class="sr-lbl">Diversidade de perfis</div><div class="sr-track"><div class="sr-fill" style="width:96%;background:var(--green)"></div></div><div class="sr-num" style="color:var(--green)">96</div></div>
+              <div class="sr"><div class="sr-lbl">Complementaridade</div><div class="sr-track"><div class="sr-fill" style="width:92%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">92</div></div>
+              <div class="sr" style="margin-bottom:0"><div class="sr-lbl">Potencial inovação</div><div class="sr-track"><div class="sr-fill" style="width:95%;background:var(--amber)"></div></div><div class="sr-num" style="color:var(--amber)">95</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Simulador de impacto</div></div>
+            <div style="padding:14px;background:var(--bg);border-radius:var(--r12);margin-bottom:12px">
+              <div class="fs12 muted mb8">Cenário: Projeto de Inovação de Produto</div>
+              <div class="sr"><div class="sr-lbl">Velocidade entrega</div><div class="sr-track"><div class="sr-fill" style="width:91%;background:var(--green)"></div></div><div class="sr-num" style="color:var(--green)">91</div></div>
+              <div class="sr"><div class="sr-lbl">Qualidade criativa</div><div class="sr-track"><div class="sr-fill" style="width:94%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">94</div></div>
+              <div class="sr" style="margin-bottom:0"><div class="sr-lbl">Gestão conflitos</div><div class="sr-track"><div class="sr-fill" style="width:88%;background:var(--rose)"></div></div><div class="sr-num" style="color:var(--rose)">88</div></div>
+            </div>
+            <div class="ia-box mb12"><div class="ia-dot green"></div><div class="ia-text">Alta complementaridade entre Inovação, Execução e Comunicação. Performance prevista <strong>23% acima da média</strong> histórica.</div></div>
+            <div style="padding:12px;background:var(--amber-l);border:1px solid #F5C4B3;border-radius:var(--r12)">
+              <div class="flex gap8"><span style="color:var(--amber);font-size:14px">⚠</span><div class="fs12" style="color:#633806">3 perfis com alta assertividade. Recomenda-se o <strong>método DACI</strong> para tomada de decisão técnica.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── PEOPLE ANALYTICS ───── -->
+      <div id="page-analytics" class="page">
+        <div class="kpi-grid mb14">
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--navy)"></div><div class="kpi-label">Total colaboradores</div><div class="kpi-val" style="color:var(--navy)">247</div><div class="kpi-delta"><span class="up">↑ 12</span>&nbsp;este trimestre</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--green)"></div><div class="kpi-label">Score médio IA</div><div class="kpi-val" style="color:var(--green)">74,2</div><div class="kpi-delta"><span class="up">↑ +3,1</span>&nbsp;vs Q1</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--amber)"></div><div class="kpi-label">PDIs ativos</div><div class="kpi-val" style="color:var(--amber)">189</div><div class="kpi-delta"><span class="up">76,5%</span>&nbsp;de adoção</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--rose)"></div><div class="kpi-label">Índice de retenção</div><div class="kpi-val" style="color:var(--rose)">94%</div><div class="kpi-delta"><span class="up">↑ +8pp</span>&nbsp;após Emotions</div></div>
+        </div>
+        <div class="g-32 mb14">
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Mapa de calor — competências por área</div><div class="card-sub">Score médio por departamento</div></div></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Área</th><th>Comunic.</th><th>Liderança</th><th>Empatia</th><th>Inovação</th><th>Execução</th><th>Score IA</th></tr></thead>
+                <tbody>
+                  <tr><td><div class="flex ai-c gap8"><div class="av av-24 c-navy">ENG</div><div>Engenharia</div></div></td><td style="color:var(--green);font-weight:600">88</td><td style="color:var(--amber);font-weight:600">74</td><td style="color:var(--green);font-weight:600">83</td><td style="color:var(--green);font-weight:600">91</td><td style="color:var(--green);font-weight:600">89</td><td><span class="badge b-green">85</span></td></tr>
+                  <tr><td><div class="flex ai-c gap8"><div class="av av-24 c-teal">VND</div><div>Vendas</div></div></td><td style="color:var(--green);font-weight:600">94</td><td style="color:var(--green);font-weight:600">87</td><td style="color:var(--amber);font-weight:600">72</td><td style="color:var(--amber);font-weight:600">68</td><td style="color:var(--green);font-weight:600">91</td><td><span class="badge b-green">82</span></td></tr>
+                  <tr><td><div class="flex ai-c gap8"><div class="av av-24 c-amber">MKT</div><div>Marketing</div></div></td><td style="color:var(--green);font-weight:600">92</td><td style="color:var(--amber);font-weight:600">76</td><td style="color:var(--green);font-weight:600">89</td><td style="color:var(--green);font-weight:600">95</td><td style="color:var(--amber);font-weight:600">71</td><td><span class="badge b-green">85</span></td></tr>
+                  <tr><td><div class="flex ai-c gap8"><div class="av av-24 c-rose">OPS</div><div>Operações</div></div></td><td style="color:var(--amber);font-weight:600">78</td><td style="color:#A32D2D;font-weight:600">65</td><td style="color:var(--amber);font-weight:600">74</td><td style="color:#A32D2D;font-weight:600">61</td><td style="color:var(--green);font-weight:600">93</td><td><span class="badge b-amber">74</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="ia-box mt12" style="margin-bottom:0"><div class="ia-dot rose"></div><div class="ia-text">Gap crítico em <strong>Operações → Inovação (61)</strong>. Recomenda-se programa de Design Thinking. ROI estimado: +18% em propostas de melhoria interna.</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="card">
+              <div class="card-title mb12">Pipeline de sucessão</div>
+              <div class="stack">
+                <div style="padding:10px;background:var(--bg);border-radius:var(--r8)"><div class="fs11 muted mb6">Diretoria de Tecnologia</div><div class="flex ai-c gap8"><div class="av av-28 c-rose">AC</div><div class="fs12 fw5 navy" style="flex:1">Ana Costa</div><span class="badge b-green" style="font-size:9px">92% match</span></div></div>
+                <div style="padding:10px;background:var(--bg);border-radius:var(--r8)"><div class="fs11 muted mb6">Gerência de Produto</div><div class="flex ai-c gap8"><div class="av av-28 c-blue">MO</div><div class="fs12 fw5 navy" style="flex:1">Mariana Oliveira</div><span class="badge b-navy" style="font-size:9px">88% match</span></div></div>
+                <div style="padding:10px;background:var(--bg);border-radius:var(--r8)"><div class="fs11 muted mb6">Tech Lead</div><div class="flex ai-c gap8"><div class="av av-28 c-navy">LM</div><div class="fs12 fw5 navy" style="flex:1">Lucas Mendes</div><span class="badge b-amber" style="font-size:9px">82% match</span></div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title mb12">ROI de treinamento</div>
+              <div class="stack">
+                <div class="flex jb fs13" style="padding:8px;background:var(--bg);border-radius:var(--r8)"><span class="muted">Antes Emotions.IA</span><span style="color:#A32D2D;font-weight:600">Score: 58,1</span></div>
+                <div class="flex jb fs13" style="padding:8px;background:var(--bg);border-radius:var(--r8)"><span class="muted">Após 6 meses</span><span style="color:var(--green);font-weight:600">Score: 74,2</span></div>
+                <div style="text-align:center;padding:12px;background:var(--green-l);border:1px solid #9FE1CB;border-radius:var(--r8)"><div class="fs11 muted">Melhoria</div><div style="font-family:var(--fh);font-size:24px;font-weight:800;color:var(--green)">+27,7%</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── TALENTOS ───── -->
+      <div id="page-talentos" class="page">
+        <div class="g2 mb14">
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Headhunter interno IA</div><div class="card-sub">Vaga: Tech Lead Senior — Engenharia</div></div></div>
+            <div class="ia-box mb14"><div class="ia-dot"></div><div class="ia-text">A IA analisou <strong>247 colaboradores</strong> e identificou 4 candidatos com potencial, mesmo sem "AWS Solutions Architect" no currículo.</div></div>
+            <div class="stack">
+              <div style="padding:14px;background:var(--green-l);border:1px solid #9FE1CB;border-radius:var(--r12);cursor:pointer" onclick="openModal('modal-member')">
+                <div class="flex ai-c gap10 mb8"><div class="av av-40 c-navy">LM</div><div style="flex:1"><div class="fs13 fw6 navy">Lucas Mendes</div><div class="fs12 muted">SRE Senior · 3 anos</div></div><div style="text-align:right"><div style="font-family:var(--fh);font-size:20px;font-weight:800;color:var(--green)">87%</div><div class="fs11 muted">compatível</div></div></div>
+                <div class="flex wrap gap6"><span class="badge b-green" style="font-size:9px">✓ Liderança técnica emergente</span><span class="badge b-green" style="font-size:9px">✓ Alta adaptabilidade</span><span class="badge b-amber" style="font-size:9px">⚡ Gap: AWS (3 semanas)</span></div>
+              </div>
+              <div style="padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r12);cursor:pointer" onclick="openModal('modal-member')">
+                <div class="flex ai-c gap10 mb8"><div class="av av-40 c-rose">AC</div><div style="flex:1"><div class="fs13 fw6 navy">Ana Costa</div><div class="fs12 muted">Staff Engineer · 5 anos</div></div><div style="text-align:right"><div style="font-family:var(--fh);font-size:20px;font-weight:800;color:var(--navy)">92%</div><div class="fs11 muted">compatível</div></div></div>
+                <div class="flex wrap gap6"><span class="badge b-navy" style="font-size:9px">✓ Liderança consolidada</span><span class="badge b-navy" style="font-size:9px">✓ Comunicação excelente</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Diretório de talentos</div>
+              <select style="border:1px solid var(--border);border-radius:var(--r8);padding:5px 10px;font-size:12px;color:var(--ink2);background:var(--white)"><option>Score IA ↓</option><option>Evolução ↓</option><option>Nome A-Z</option></select>
+            </div>
+            <div class="stack">
+              <div style="padding:10px;background:var(--bg);border-radius:var(--r12);display:flex;align-items:center;gap:10px;cursor:pointer" onclick="openModal('modal-member')"><div class="av av-32 c-rose">AC</div><div style="flex:1"><div class="fs12 fw5 navy">Ana Costa</div><div class="flex wrap gap4 mt4"><span class="badge b-green" style="font-size:9px">Liderança 92</span><span class="badge b-navy" style="font-size:9px">Comunicação 94</span></div></div><div style="font-family:var(--fh);font-size:17px;font-weight:800;color:var(--green)">92</div></div>
+              <div style="padding:10px;background:var(--bg);border-radius:var(--r12);display:flex;align-items:center;gap:10px;cursor:pointer" onclick="openModal('modal-member')"><div class="av av-32 c-blue">MO</div><div style="flex:1"><div class="fs12 fw5 navy">Mariana Oliveira</div><div class="flex wrap gap4 mt4"><span class="badge b-amber" style="font-size:9px">Inovação 95</span><span class="badge b-rose" style="font-size:9px">Empatia 89</span></div></div><div style="font-family:var(--fh);font-size:17px;font-weight:800;color:var(--navy)">89</div></div>
+              <div style="padding:10px;background:var(--blue-l);border:1px solid var(--border2);border-radius:var(--r12);display:flex;align-items:center;gap:10px"><div class="av av-32 c-navy">LM</div><div style="flex:1"><div class="fs12 fw5 navy">Lucas Mendes <span style="color:var(--rose);font-size:10px">(você)</span></div><div class="flex wrap gap4 mt4"><span class="badge b-green" style="font-size:9px">Resolução 91</span><span class="badge b-navy" style="font-size:9px">Inovação 84</span></div></div><div style="font-family:var(--fh);font-size:17px;font-weight:800;color:var(--amber)">87</div></div>
+              <div style="padding:10px;background:var(--bg);border-radius:var(--r12);display:flex;align-items:center;gap:10px;cursor:pointer" onclick="openModal('modal-member')"><div class="av av-32 c-amber">RP</div><div style="flex:1"><div class="fs12 fw5 navy">Rafael Pinto</div><div class="flex wrap gap4 mt4"><span class="badge b-amber" style="font-size:9px">Execução 91</span><span class="badge b-navy" style="font-size:9px">Organização 88</span></div></div><div style="font-family:var(--fh);font-size:17px;font-weight:800;color:var(--amber)">84</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── RANKING ───── -->
+      <div id="page-ranking" class="page">
+        <div class="g2 mb14">
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Ranking de evolução — Q3 2025</div><div class="card-sub">Maior crescimento de competências no trimestre</div></div></div>
+            <div class="stack">
+              <div class="lb-row"><div class="lb-rank gold">1</div><div class="av av-36 c-rose">AC</div><div style="flex:1"><div class="fs13 fw6 navy">Ana Costa</div><div class="fs11 muted">+22pp em Liderança</div></div><div style="text-align:right"><div style="font-family:var(--fh);font-size:17px;font-weight:800;color:var(--amber)">92</div><div class="fs11 up">↑ +22pp</div></div></div>
+              <div class="lb-row" style="background:var(--blue-l);border-radius:var(--r8)"><div class="lb-rank silver">2</div><div class="av av-36 c-navy">LM</div><div style="flex:1"><div class="fs13 fw6 navy">Lucas Mendes <span style="color:var(--rose);font-size:10px">(você)</span></div><div class="fs11 muted">+18pp em Comunicação</div></div><div style="text-align:right"><div style="font-family:var(--fh);font-size:17px;font-weight:800;color:var(--navy)">87</div><div class="fs11 up">↑ +18pp</div></div></div>
+              <div class="lb-row"><div class="lb-rank bronze">3</div><div class="av av-36 c-blue">MO</div><div style="flex:1"><div class="fs13 fw6 navy">Mariana Oliveira</div><div class="fs11 muted">+15pp em Inovação</div></div><div style="text-align:right"><div style="font-family:var(--fh);font-size:17px;font-weight:800;color:var(--ink2)">89</div><div class="fs11 up">↑ +15pp</div></div></div>
+              <div class="lb-row"><div class="lb-rank">4</div><div class="av av-36 c-amber">RP</div><div style="flex:1"><div class="fs13 fw6 navy">Rafael Pinto</div><div class="fs11 muted">+12pp em Execução</div></div><div style="text-align:right"><div style="font-family:var(--fh);font-size:17px;font-weight:800;color:var(--ink2)">84</div><div class="fs11 up">↑ +12pp</div></div></div>
+              <div class="lb-row"><div class="lb-rank">5</div><div class="av av-36 c-teal">TS</div><div style="flex:1"><div class="fs13 fw6 navy">Thiago Santos</div><div class="fs11 muted">+10pp em Empatia</div></div><div style="text-align:right"><div style="font-family:var(--fh);font-size:17px;font-weight:800;color:var(--ink2)">81</div><div class="fs11 up">↑ +10pp</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Reconhecimento entre pares</div><div class="card-sub">Kudos recebidos este mês</div></div></div>
+            <div class="stack mb14">
+              <div class="peer-card"><div class="peer-head"><div class="av av-24 c-rose">AC</div><div class="fs12 fw6 navy" style="flex:1">Ana Costa</div><div class="fs11 muted">2d</div></div><div class="peer-msg">"Lucas foi essencial na resolução do incidente de produção. Liderança calma e objetiva."</div><div class="mt8"><span class="badge b-navy" style="font-size:9px">Trabalho em Equipe</span></div></div>
+              <div class="peer-card"><div class="peer-head"><div class="av av-24 c-teal">TS</div><div class="fs12 fw6 navy" style="flex:1">Thiago Santos</div><div class="fs11 muted">5d</div></div><div class="peer-msg">"Sempre disposto a explicar. Fez diferença na minha curva de aprendizado."</div><div class="mt8"><span class="badge b-green" style="font-size:9px">Mentoria</span></div></div>
+            </div>
+            <button class="btn-primary" onclick="toast('Kudos enviado! +5 pts sociais para o colega','success')">Enviar Kudos para colega</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── IA ENGINE ───── -->
+      <div id="page-ia_engine" class="page">
+        <div class="g3 mb14">
+          <div class="card"><div class="card-title mb8">Camada NLP</div><div class="card-sub">Extração de atributos comportamentais</div>
+            <div class="stack mb12">
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Análise de tom emocional</span><span class="badge b-green" style="font-size:9px">Ativo</span></div>
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Detecção de hedging</span><span class="badge b-green" style="font-size:9px">Ativo</span></div>
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Indicadores de colaboração</span><span class="badge b-green" style="font-size:9px">Ativo</span></div>
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Análise pronomes (nós/eu)</span><span class="badge b-navy" style="font-size:9px">Beta</span></div>
+            </div>
+            <div style="padding:10px;background:var(--blue-l);border-radius:var(--r8)"><div class="fs11 muted">Última análise</div><div class="fs12 mt8">Transcrição Daily · hoje 09:32</div><div class="fs11 mt4" style="color:var(--green)">Confiança: 96%</div></div>
+          </div>
+          <div class="card"><div class="card-title mb8">Camada Random Forest</div><div class="card-sub">Classificação estatística — sem alucinações</div>
+            <div class="stack mb12">
+              <div style="padding:10px;background:var(--bg);border-radius:var(--r8)"><div class="flex jb mb6 fs12"><span>Árvores de decisão</span><span style="color:var(--green);font-weight:600">500 ativas</span></div><div class="sr-track"><div class="sr-fill" style="width:100%;background:var(--green)"></div></div></div>
+              <div style="padding:10px;background:var(--bg);border-radius:var(--r8)"><div class="flex jb mb6 fs12"><span>Acurácia</span><span style="color:var(--green);font-weight:600">93,7%</span></div><div class="sr-track"><div class="sr-fill" style="width:93.7%;background:var(--green)"></div></div></div>
+              <div style="padding:10px;background:var(--bg);border-radius:var(--r8)"><div class="flex jb mb6 fs12"><span>Coeficiente Kappa</span><span style="color:var(--navy);font-weight:600">0,87</span></div><div class="sr-track"><div class="sr-fill" style="width:87%;background:var(--navy)"></div></div></div>
+            </div>
+          </div>
+          <div class="card"><div class="card-title mb8">Auditoria ética (SHAP)</div><div class="card-sub">Fairness e explicabilidade algorítmica</div>
+            <div class="stack mb12">
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Viés de gênero</span><span class="badge b-green" style="font-size:9px">✓ Neutro</span></div>
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Viés étnico/racial</span><span class="badge b-green" style="font-size:9px">✓ Neutro</span></div>
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Viés de senioridade</span><span class="badge b-green" style="font-size:9px">✓ Calibrado</span></div>
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Última auditoria</span><span class="fs12 muted">15 Jul 2025</span></div>
+            </div>
+            <button class="tb-btn" style="width:100%;justify-content:center;height:38px" onclick="toast('Relatório SHAP exportado em PDF','success')">Exportar relatório SHAP</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── CONTEÚDO ───── -->
+      <div id="page-conteudo" class="page">
+        <div class="g3">
+          <div class="card" style="cursor:pointer" onclick="toast('Live iniciada! Conectando ao stream ao vivo','info')">
+            <div style="aspect-ratio:16/9;background:linear-gradient(135deg,var(--blue-l),var(--rose-xl));border-radius:var(--r12);margin-bottom:14px;display:flex;align-items:center;justify-content:center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="var(--rose)"/></svg></div>
+            <div class="fs11" style="color:var(--rose);font-weight:600;margin-bottom:4px">LIVE AGORA</div>
+            <div class="fs13 fw6 navy mb4">Inteligência Emocional no Ambiente Tech</div>
+            <div class="fs12 muted">Dr. Felipe Amaral · 342 assistindo</div>
+          </div>
+          <div class="card" style="cursor:pointer" onclick="toast('Workshop adicionado à sua trilha','success')">
+            <div style="aspect-ratio:16/9;background:linear-gradient(135deg,var(--green-l),var(--blue-l));border-radius:var(--r12);margin-bottom:14px;display:flex;align-items:center;justify-content:center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M12 22V12M12 12L8 16M12 12l4 4M20 9.5A8 8 0 1 1 5 10"/></svg></div>
+            <div class="fs11" style="color:var(--green);font-weight:600;margin-bottom:4px">WORKSHOP · 22 AGO</div>
+            <div class="fs13 fw6 navy mb4">Comunicação Não-Violenta para Líderes</div>
+            <div class="fs12 muted">Presencial · São Paulo · 4h</div>
+          </div>
+          <div class="card" style="cursor:pointer" onclick="toast('Trilha microlearning iniciada! 5 módulos','info')">
+            <div style="aspect-ratio:16/9;background:linear-gradient(135deg,var(--amber-l),var(--rose-xl));border-radius:var(--r12);margin-bottom:14px;display:flex;align-items:center;justify-content:center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+            <div class="fs11" style="color:var(--amber);font-weight:600;margin-bottom:4px">MICROLEARNING</div>
+            <div class="fs13 fw6 navy mb4">Feedback de Alto Impacto — Método SBI</div>
+            <div class="fs12 muted">5 módulos · 45 min · Auto-pace</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main-area -->
+
+</div><!-- /s-app -->
+
+<!-- ══════════════════════
+     MODALS
+══════════════════════ -->
+
+<!-- Modal IA Chat -->
+<div id="modal-ai" class="modal-bg" onclick="closeBg(event,'modal-ai')">
+  <div class="modal">
+    <div class="modal-title">Perguntar à IA</div>
+    <div class="modal-sub">Insights sobre seu desenvolvimento e carreira</div>
+    <div id="chat-hist" style="max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+      <div style="background:var(--blue-l);border-radius:var(--r12);padding:12px;font-size:13px"><div class="fs11 navy fw6 mb6">Emotions.IA</div>Olá, Lucas! Com base na sua análise recente, você está em ótima trajetória para Liderança Técnica. Como posso ajudar?</div>
+    </div>
+    <div class="flex gap8 mb10">
+      <input id="chat-inp" class="field-input" placeholder="Ex: Como melhorar minha liderança?" style="flex:1" onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="btn-primary" style="width:80px;height:44px;border-radius:var(--r8);font-family:var(--fb);font-size:13px" onclick="sendChat()">Enviar</button>
+    </div>
+    <div class="flex wrap gap6">
+      <div style="padding:4px 10px;background:var(--bg);border-radius:20px;font-size:11px;color:var(--ink2);cursor:pointer" onclick="setQ('Qual meu maior gap?')">Qual meu maior gap?</div>
+      <div style="padding:4px 10px;background:var(--bg);border-radius:20px;font-size:11px;color:var(--ink2);cursor:pointer" onclick="setQ('Como estou vs. perfil ideal?')">Como estou vs. ideal?</div>
+      <div style="padding:4px 10px;background:var(--bg);border-radius:20px;font-size:11px;color:var(--ink2);cursor:pointer" onclick="setQ('O que focar para ser promovido?')">Foco para promoção?</div>
+    </div>
+    <button class="tb-btn mt16" style="width:100%;justify-content:center" onclick="closeModal('modal-ai')">Fechar</button>
+  </div>
+</div>
+
+<!-- Modal Member Detail -->
+<div id="modal-member" class="modal-bg" onclick="closeBg(event,'modal-member')">
+  <div class="modal">
+    <div class="flex ai-c gap12 mb20" style="padding-bottom:20px;border-bottom:1px solid var(--border)">
+      <div class="av av-48 c-rose">AC</div>
+      <div style="flex:1"><div style="font-family:var(--fh);font-size:20px;font-weight:800;color:var(--navy)">Ana Costa</div><div class="fs13 muted">Staff Engineer · 5 anos de empresa</div><div class="flex gap6 mt8"><span class="badge b-green">Score: 92</span><span class="badge b-navy">Prontidão: 95%</span></div></div>
+    </div>
+    <div class="modal-sub">Análise comportamental — Emotions.IA</div>
+    <div class="sr"><div class="sr-lbl">Comunicação</div><div class="sr-track"><div class="sr-fill" style="width:94%;background:var(--green)"></div></div><div class="sr-num" style="color:var(--green)">94</div></div>
+    <div class="sr"><div class="sr-lbl">Liderança</div><div class="sr-track"><div class="sr-fill" style="width:92%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">92</div></div>
+    <div class="sr"><div class="sr-lbl">Inovação</div><div class="sr-track"><div class="sr-fill" style="width:88%;background:var(--amber)"></div></div><div class="sr-num" style="color:var(--amber)">88</div></div>
+    <div class="sr mb16"><div class="sr-lbl">Empatia</div><div class="sr-track"><div class="sr-fill" style="width:90%;background:var(--rose)"></div></div><div class="sr-num" style="color:var(--rose)">90</div></div>
+    <div class="ia-box mb16"><div class="ia-dot green"></div><div class="ia-text">Perfil de <strong>liderança transformacional</strong>. Potencial sucessora para Diretoria de Tecnologia com 18 meses de desenvolvimento focado.</div></div>
+    <div class="flex gap8">
+      <button class="btn-primary" style="flex:1;height:42px;border-radius:var(--r8);font-family:var(--fb);font-size:13px" onclick="closeModal('modal-member');toast('Ana Costa adicionada ao squad','success')">Adicionar ao squad</button>
+      <button class="tb-btn" style="flex:1;height:42px;justify-content:center" onclick="closeModal('modal-member');toast('Kudos enviado para Ana','success')">Enviar Kudos</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast-el" class="toast">
+  <svg id="t-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.8"><path d="M3 9l3.5 3.5L13 5"/></svg>
+  <span id="t-msg">Mensagem</span>
+</div>
+
+<script>
+/* ─── LOGIN ─── */
+function selRole(el){document.querySelectorAll('.role-pill').forEach(p=>p.classList.remove('sel'));el.classList.add('sel')}
+function togglePw(){const i=document.getElementById('pwInp');i.type=i.type==='password'?'text':'password'}
+function loginStep(n){
+  document.querySelectorAll('.login-step').forEach(s=>s.style.display='none');
+  document.getElementById('ls'+n).style.display='block';
+}
+function enterApp(){
+  document.getElementById('s-login').classList.remove('active');
+  document.getElementById('s-app').classList.add('active');
+  toast('Bem-vindo, Lucas! Score IA atual: 87','success');
+}
+
+/* ─── NAVIGATION ─── */
+const pageTitles={
+  dashboard:'Dashboard',perfil:'Meu perfil',jornada:'Minha jornada',
+  competencias:'Competências HumanWare',desafios:'Desafios & XP',
+  avaliacao:'Avaliação 360°',squad:'Squad builder',
+  analytics:'People analytics',talentos:'Gestão de talentos',
+  ranking:'Ranking',ia_engine:'IA Engine',conteudo:'Hub de conteúdo'
+};
+function nav(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(pg)pg.classList.add('active');
+  document.querySelectorAll('.sb-link').forEach(l=>l.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  else{
+    document.querySelectorAll('.sb-link').forEach(l=>{
+      if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes("'"+id+"'"))l.classList.add('active');
+    });
+  }
+  document.getElementById('tb-title').innerHTML=(pageTitles[id]||id)+' <span class="tb-sub" id="tb-sub">— Bom dia, Lucas</span>';
+}
+
+/* ─── MODALS ─── */
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function closeBg(e,id){if(e.target===e.currentTarget)closeModal(id)}
+
+/* ─── TOAST ─── */
+let tt;
+function toast(msg,type='success'){
+  const el=document.getElementById('toast-el');
+  const ic=document.getElementById('t-icon');
+  document.getElementById('t-msg').textContent=msg;
+  const colors={success:'#0F6E56',info:'#1B2A6B',warn:'#BA7517'};
+  el.style.background=colors[type]||colors.success;
+  el.classList.add('show');
+  clearTimeout(tt);
+  tt=setTimeout(()=>el.classList.remove('show'),3500);
+}
+
+/* ─── AI CHAT ─── */
+const aiR={
+  'gap':'Seu maior gap é <strong>Liderança (76/90)</strong>. Recomendação: 1) Facilitar reuniões técnicas 2) Mentorear um júnior 3) Trilha "Da Influência à Liderança". Resultado estimado em ~60 dias.',
+  'ideal':'Você está a <strong>14 pontos</strong> do perfil ideal de Tech Lead. Destaques: Resolução (91) e Comunicação (88). PDI atualizado com ações prioritárias.',
+  'promo':'Para promoção a Tech Lead: foque em Liderança (+14pts), conclua o desafio de reuniões e obtenha certificação AWS. Estimativa: 3–4 meses com dedicação.',
+  'def':'Com base nos artefatos analisados, você está em trajetória de alto crescimento. Sua <strong>consistência e adaptabilidade</strong> são reconhecidas pelo time. Continue!'
+};
+function sendChat(){
+  const inp=document.getElementById('chat-inp');
+  const txt=inp.value.trim();if(!txt)return;
+  const hist=document.getElementById('chat-hist');
+  hist.innerHTML+=`<div style="background:var(--rose-xl);border-radius:12px;padding:10px 12px;font-size:13px;text-align:right;margin-left:40px">${txt}</div>`;
+  const lk=txt.toLowerCase();
+  const r=lk.includes('gap')||lk.includes('fraqueza')?aiR.gap:lk.includes('ideal')||lk.includes('cargo')?aiR.ideal:lk.includes('promo')||lk.includes('foco')?aiR.promo:aiR.def;
+  setTimeout(()=>{
+    hist.innerHTML+=`<div style="background:var(--blue-l);border-radius:12px;padding:10px 12px;font-size:13px"><div class="fs11 navy fw6 mb6">Emotions.IA</div>${r}</div>`;
+    hist.scrollTop=hist.scrollHeight;
+  },600);
+  inp.value='';hist.scrollTop=hist.scrollHeight;
+}
+function setQ(t){document.getElementById('chat-inp').value=t}
+</script>
+</body>
+</html>

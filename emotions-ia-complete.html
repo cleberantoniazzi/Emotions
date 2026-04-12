@@ -132,8 +132,8 @@ a{text-decoration:none}
 /* MFA step */
 .mfa-grid{display:flex;gap:8px;margin-bottom:8px}
 .mfa-in{
-  flex:1;height:48px;border:1px solid var(--border);border-radius:var(--r8);
-  text-align:center;font-size:24px;font-weight:500;font-family:var(--fh);
+  flex:1;height:28px;border:1px solid var(--border);border-radius:var(--r8);
+  text-align:center;font-size:12px;font-weight:200;font-family:var(--fh);
   color:var(--navy);background:var(--white);outline:none;transition:border-color .15s;
 }
 .mfa-in:focus{border-color:var(--navy)}
@@ -423,6 +423,41 @@ tr:hover td{background:rgba(27,42,107,.02)}
 
 /* Radar */
 .radar-svg{overflow:visible}
+
+/* ── ARTEFATOS / EQUIPE / XAI / HITL / VALIDAÇÃO ── */
+.artifact-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg);border-radius:var(--r8);margin-bottom:6px}
+.artifact-icon{width:32px;height:32px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-band{display:flex;gap:10px;margin-bottom:14px}
+.stat-pill{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:var(--r8);padding:10px 12px;text-align:center}
+.stat-pill-v{font-family:var(--fh);font-size:20px;font-weight:800;line-height:1}
+.stat-pill-l{font-size:10px;color:var(--ink3);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+/* Emoção gauge */
+.emo-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.emo-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
+.emo-lbl{font-size:11px;color:var(--ink2);width:90px;flex-shrink:0}
+/* SHAP bars */
+.shap-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.shap-lbl{font-size:11px;color:var(--ink2);width:110px;flex-shrink:0}
+.shap-pos{height:8px;border-radius:4px;background:var(--navy);transition:width .8s}
+.shap-neg{height:8px;border-radius:4px;background:var(--rose);transition:width .8s}
+.shap-val{font-size:11px;font-weight:600;width:36px;text-align:right;flex-shrink:0}
+/* LIME */
+.lime-token{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:500;margin:2px}
+/* Network nodes */
+.net-svg{overflow:visible}
+/* HITL decision card */
+.hitl-card{background:var(--white);border:1.5px solid var(--border2);border-radius:var(--r12);padding:16px;margin-bottom:10px;position:relative}
+.hitl-card.pending{border-color:#F5C4B3}
+.hitl-card.approved{border-color:#9FE1CB;opacity:.7}
+.hitl-status{position:absolute;top:14px;right:14px}
+/* Kappa gauge ring */
+.kappa-ring{transform-origin:center;transform:rotate(-90deg)}
+/* Validation cycle step */
+.vcycle{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.vcycle:last-child{border-bottom:none}
+.vcycle-num{width:26px;height:26px;border-radius:50%;background:var(--navy);color:var(--white);font-family:var(--fh);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vcycle-num.done{background:var(--green)}
+.vcycle-num.next{background:var(--amber)}
 </style>
 </head>
 <body>
@@ -516,9 +551,9 @@ tr:hover td{background:rgba(27,42,107,.02)}
           <div class="lc-sub">Código enviado para •••• 5847</div>
         </div>
         <div class="mfa-grid" id="mfaGrid">
-          <input class="mfa-in filled" value="7 - 9 - 8 - 3" maxlength="1">
-          <!-- <input class="mfa-in filled" value="3" maxlength="1">
-          <input class="mfa-in filled" value="9" maxlength="1">
+          <input class="mfa-in filled" value="7" maxlength="1">
+          <input class="mfa-in filled" value="3" maxlength="1">
+          <!-- <input class="mfa-in filled" value="9" maxlength="1">
           <input class="mfa-in" value="" maxlength="1" placeholder="—">
           <input class="mfa-in" value="" maxlength="1" placeholder="—">
           <input class="mfa-in" value="" maxlength="1" placeholder="—"> -->
@@ -637,6 +672,16 @@ tr:hover td{background:rgba(27,42,107,.02)}
           <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="10" height="10" rx="2"/><path d="M6 1v2M10 1v2M6 13v2M10 13v2M1 6h2M1 10h2M13 6h2M13 10h2"/></svg>
           IA Engine
         </button>
+        <button class="sb-link" onclick="nav('artefatos',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 2h7l3 3v9H3z"/><path d="M10 2v3h3M5 8h6M5 11h4"/></svg>
+          Artefatos Digitais
+        </button>
+        <button class="sb-link" onclick="nav('validacao',this)">
+          <div class="sb-active-bar"></div>
+          <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1l1 3h3l-2.5 2 1 3L8 7.5 5.5 9l1-3L4 4h3z"/><path d="M3 12h10M3 15h7"/></svg>
+          Validação &amp; Ética
+        </button>
         <button class="sb-link" onclick="nav('conteudo',this)">
           <div class="sb-active-bar"></div>
           <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 3h10v10H3z"/><path d="M6 6h4M6 9h3"/></svg>
@@ -745,7 +790,7 @@ tr:hover td{background:rgba(27,42,107,.02)}
               </div>
               <div class="ia-box">
                 <div class="ia-dot green"></div>
-                <div class="ia-text">Linguagem colaborativa <strong>+12%</strong> esta semana. Progresso direto em Trabalho em Equipe — continue nas dailies.</div>
+                <div class="ia-text">Linguagem colaborativa <strong>+12%</strong> esta semana. Pronomes "nós": 94%. Centralidade de rede: 0,82. <a onclick="nav('competencias',null)" style="color:var(--navy);cursor:pointer;font-weight:600">Ver métricas de equipe →</a></div>
               </div>
               <div class="ia-box" style="background:#FFF5F7;border-color:#F4C0D1;margin-bottom:0">
                 <div class="ia-dot rose"></div>
@@ -944,17 +989,17 @@ tr:hover td{background:rgba(27,42,107,.02)}
           <div class="card">
             <div class="card-head"><div><div class="card-title">Eixos HumanWare</div><div class="card-sub">Ideias · Social · Trabalho — metodologia científica</div></div><button class="tb-btn" style="font-size:11px;padding:5px 10px" onclick="openModal('modal-ai')">Ver análise IA</button></div>
             <div class="g3" style="gap:10px;margin-bottom:14px">
-              <div class="hw-pillar" style="border-color:#D0D9F5"><div class="hw-label" style="color:var(--navy)">💡 Eixo Ideias</div>
+              <div class="hw-pillar" style="border-color:#D0D9F5"><div class="hw-label" style="color:var(--navy)">Eixo Ideias</div>
                 <div class="sr"><div class="sr-lbl" style="width:90px">Criatividade</div><div class="sr-track"><div class="sr-fill" style="width:84%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">84</div></div>
                 <div class="sr"><div class="sr-lbl" style="width:90px">Inovação</div><div class="sr-track"><div class="sr-fill" style="width:79%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">79</div></div>
                 <div class="sr" style="margin-bottom:0"><div class="sr-lbl" style="width:90px">Pens. crítico</div><div class="sr-track"><div class="sr-fill" style="width:92%;background:var(--navy)"></div></div><div class="sr-num" style="color:var(--navy)">92</div></div>
               </div>
-              <div class="hw-pillar" style="border-color:#F4C0D1"><div class="hw-label" style="color:#993556">🤝 Eixo Social</div>
+              <div class="hw-pillar" style="border-color:#F4C0D1"><div class="hw-label" style="color:#993556">Eixo Social</div>
                 <div class="sr"><div class="sr-lbl" style="width:90px">Comunicação</div><div class="sr-track"><div class="sr-fill" style="width:88%;background:var(--rose)"></div></div><div class="sr-num" style="color:var(--rose)">88</div></div>
                 <div class="sr"><div class="sr-lbl" style="width:90px">Empatia</div><div class="sr-track"><div class="sr-fill" style="width:82%;background:var(--rose)"></div></div><div class="sr-num" style="color:var(--rose)">82</div></div>
                 <div class="sr" style="margin-bottom:0"><div class="sr-lbl" style="width:90px">Liderança</div><div class="sr-track"><div class="sr-fill" style="width:76%;background:#E8738A99"></div></div><div class="sr-num" style="color:var(--amber)">76</div></div>
               </div>
-              <div class="hw-pillar" style="border-color:#F5C4B3"><div class="hw-label" style="color:var(--amber)">⚙️ Eixo Trabalho</div>
+              <div class="hw-pillar" style="border-color:#F5C4B3"><div class="hw-label" style="color:var(--amber)">Eixo Trabalho</div>
                 <div class="sr"><div class="sr-lbl" style="width:90px">Organização</div><div class="sr-track"><div class="sr-fill" style="width:91%;background:var(--amber)"></div></div><div class="sr-num" style="color:var(--amber)">91</div></div>
                 <div class="sr"><div class="sr-lbl" style="width:90px">Adaptabilidade</div><div class="sr-track"><div class="sr-fill" style="width:85%;background:var(--amber)"></div></div><div class="sr-num" style="color:var(--amber)">85</div></div>
                 <div class="sr" style="margin-bottom:0"><div class="sr-lbl" style="width:90px">Resolução</div><div class="sr-track"><div class="sr-fill" style="width:91%;background:var(--green)"></div></div><div class="sr-num" style="color:var(--green)">91</div></div>
@@ -968,19 +1013,120 @@ tr:hover td{background:rgba(27,42,107,.02)}
           <div class="card">
             <div class="card-title mb12">Badges conquistados</div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
-              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:24px;margin-bottom:4px">🎯</div><div class="fs11 muted">Resolvedor</div></div>
-              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:24px;margin-bottom:4px">⚡</div><div class="fs11 muted">Fast Learn</div></div>
-              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:24px;margin-bottom:4px">🧠</div><div class="fs11 muted">Inovador</div></div>
-              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:24px;margin-bottom:4px">🌟</div><div class="fs11 muted">Top Collab</div></div>
-              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8);border:1.5px dashed var(--border2);opacity:.5"><div style="font-size:24px;margin-bottom:4px">👑</div><div class="fs11 muted">Líder</div></div>
-              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8);border:1.5px dashed var(--border2);opacity:.5"><div style="font-size:24px;margin-bottom:4px">🏆</div><div class="fs11 muted">MVP</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:22px;margin-bottom:4px">&#127919;</div><div class="fs11 muted">Resolvedor</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:22px;margin-bottom:4px">&#9889;</div><div class="fs11 muted">Fast Learn</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:22px;margin-bottom:4px">&#129504;</div><div class="fs11 muted">Inovador</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8)"><div style="font-size:22px;margin-bottom:4px">&#127775;</div><div class="fs11 muted">Top Collab</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8);border:1.5px dashed var(--border2);opacity:.5"><div style="font-size:22px;margin-bottom:4px">&#128081;</div><div class="fs11 muted">Líder</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg);border-radius:var(--r8);border:1.5px dashed var(--border2);opacity:.5"><div style="font-size:22px;margin-bottom:4px">&#127942;</div><div class="fs11 muted">MVP</div></div>
             </div>
             <div class="fs11 muted mb8">Nível de XP</div>
-            <div class="flex ai-c gap8 mb8">
-              <div style="flex:1;height:8px;background:var(--bg2);border-radius:4px;overflow:hidden"><div style="width:73%;height:100%;background:var(--navy);border-radius:4px"></div></div>
-              <div class="fs12 fw6" style="color:var(--amber)">4820 / 6600</div>
-            </div>
+            <div class="flex ai-c gap8 mb8"><div style="flex:1;height:8px;background:var(--bg2);border-radius:4px;overflow:hidden"><div style="width:73%;height:100%;background:var(--navy);border-radius:4px"></div></div><div class="fs12 fw6" style="color:var(--amber)">4820 / 6600</div></div>
             <div class="fs11 muted">Nível 8 → Nível 9 faltam 1780 XP</div>
+          </div>
+        </div>
+
+        <!-- NOVO: Trabalho em Equipe + Autocontrole Emocional -->
+        <div class="g2 mb14">
+          <!-- Trabalho em Equipe — métricas de rede e repositório -->
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">Trabalho em Equipe — Métricas de Rede</div><div class="card-sub">Proxies: centralidade de rede · contribuições em repositório · colaboração</div></div>
+              <span class="badge b-green">Score: 83</span>
+            </div>
+            <div class="stat-band">
+              <div class="stat-pill"><div class="stat-pill-v" style="color:var(--navy)">47</div><div class="stat-pill-l">Commits/mês</div></div>
+              <div class="stat-pill"><div class="stat-pill-v" style="color:var(--green)">12</div><div class="stat-pill-l">PRs aprovados</div></div>
+              <div class="stat-pill"><div class="stat-pill-v" style="color:var(--amber)">8</div><div class="stat-pill-l">Code reviews</div></div>
+              <div class="stat-pill"><div class="stat-pill-v" style="color:#993556">94%</div><div class="stat-pill-l">Pronomes "nós"</div></div>
+            </div>
+            <!-- Rede sociométrica SVG -->
+            <div style="background:var(--bg);border-radius:var(--r12);padding:12px;margin-bottom:12px">
+              <div class="fs11 fw6 navy mb8" style="text-transform:uppercase;letter-spacing:.6px">Mapa de centralidade — interações no trimestre</div>
+              <svg width="100%" viewBox="0 0 320 160" class="net-svg">
+                <!-- links -->
+                <line x1="160" y1="80" x2="80" y2="40" stroke="#D0D9F5" stroke-width="2.5"/>
+                <line x1="160" y1="80" x2="240" y2="40" stroke="#D0D9F5" stroke-width="2"/>
+                <line x1="160" y1="80" x2="260" y2="100" stroke="#D0D9F5" stroke-width="1.5"/>
+                <line x1="160" y1="80" x2="60" y2="110" stroke="#D0D9F5" stroke-width="1.5"/>
+                <line x1="160" y1="80" x2="160" y2="148" stroke="#D0D9F5" stroke-width="1"/>
+                <line x1="80" y1="40" x2="240" y2="40" stroke="#ECEEF5" stroke-width="1"/>
+                <line x1="240" y1="40" x2="260" y2="100" stroke="#ECEEF5" stroke-width="1"/>
+                <!-- nodes secundários -->
+                <circle cx="80" cy="40" r="14" fill="#EEF3FF" stroke="#D0D9F5" stroke-width="1.5"/>
+                <text x="80" y="44" text-anchor="middle" font-size="8" font-family="DM Sans" fill="#4B5168">AC</text>
+                <circle cx="240" cy="40" r="12" fill="#EEF3FF" stroke="#D0D9F5" stroke-width="1.5"/>
+                <text x="240" y="44" text-anchor="middle" font-size="8" font-family="DM Sans" fill="#4B5168">RP</text>
+                <circle cx="260" cy="100" r="11" fill="#EEF3FF" stroke="#D0D9F5" stroke-width="1.5"/>
+                <text x="260" y="104" text-anchor="middle" font-size="8" font-family="DM Sans" fill="#4B5168">MO</text>
+                <circle cx="60" cy="110" r="10" fill="#EEF3FF" stroke="#D0D9F5" stroke-width="1.5"/>
+                <text x="60" y="114" text-anchor="middle" font-size="8" font-family="DM Sans" fill="#4B5168">TS</text>
+                <circle cx="160" cy="148" r="9" fill="#EEF3FF" stroke="#D0D9F5" stroke-width="1.5"/>
+                <text x="160" y="152" text-anchor="middle" font-size="8" font-family="DM Sans" fill="#4B5168">JP</text>
+                <!-- node central Lucas -->
+                <circle cx="160" cy="80" r="22" fill="#1B2A6B" opacity=".12"/>
+                <circle cx="160" cy="80" r="17" fill="#1B2A6B"/>
+                <text x="160" y="84" text-anchor="middle" font-size="9" font-family="DM Sans" fill="white" font-weight="700">LM</text>
+                <!-- label centralidade -->
+                <text x="160" y="108" text-anchor="middle" font-size="9" font-family="DM Sans" fill="#8B90A8">Centralidade: 0.82</text>
+              </svg>
+            </div>
+            <div class="ia-box" style="margin-bottom:0">
+              <div class="ia-dot green"></div>
+              <div class="ia-text">Centralidade de rede <strong>0,82 (top 15%)</strong>. Você é ponte de comunicação entre 5 colegas. Contribuição em projetos colaborativos: <strong>34% do total de commits</strong> em projetos com 3+ devs.</div>
+            </div>
+          </div>
+
+          <!-- Autocontrole Emocional — proxies explícitos -->
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">Autocontrole Emocional</div><div class="card-sub">Proxies: variabilidade de tom · resiliência a feedbacks negativos</div></div>
+              <span class="badge b-amber">Score: 78</span>
+            </div>
+            <!-- Variabilidade de tom -->
+            <div style="background:var(--bg);border-radius:var(--r12);padding:12px;margin-bottom:10px">
+              <div class="fs11 fw6 navy mb10" style="text-transform:uppercase;letter-spacing:.6px">Variabilidade de tom — últimas 4 semanas</div>
+              <svg width="100%" viewBox="0 0 260 80">
+                <polyline points="0,60 30,55 60,40 90,58 120,35 150,50 180,28 210,42 240,38 260,32" fill="none" stroke="#1B2A6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="0,50 30,50 60,50 90,50 120,50 150,50 180,50 210,50 240,50 260,50" fill="none" stroke="#E4E7F0" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="0" y="74" font-size="8" font-family="DM Sans" fill="#8B90A8">S1</text>
+                <text x="58" y="74" font-size="8" font-family="DM Sans" fill="#8B90A8">S2</text>
+                <text x="118" y="74" font-size="8" font-family="DM Sans" fill="#8B90A8">S3</text>
+                <text x="178" y="74" font-size="8" font-family="DM Sans" fill="#8B90A8">S4</text>
+                <text x="220" y="20" font-size="8" font-family="DM Sans" fill="#0F6E56">Tendência +</text>
+              </svg>
+              <div class="flex gap8 mt4">
+                <div style="flex:1;padding:7px;background:var(--white);border-radius:var(--r8);text-align:center"><div class="fs12 fw6" style="color:var(--navy)">0,18</div><div class="fs10 muted">Variabilidade atual</div></div>
+                <div style="flex:1;padding:7px;background:var(--white);border-radius:var(--r8);text-align:center"><div class="fs12 fw6" style="color:var(--green)">0,24</div><div class="fs10 muted">Média do grupo</div></div>
+                <div style="flex:1;padding:7px;background:var(--green-l);border-radius:var(--r8);text-align:center"><div class="fs12 fw6" style="color:var(--green)">+12%</div><div class="fs10 muted">Estabilidade</div></div>
+              </div>
+            </div>
+            <!-- Resiliência a feedback negativo -->
+            <div style="background:var(--bg);border-radius:var(--r12);padding:12px;margin-bottom:10px">
+              <div class="fs11 fw6 navy mb8" style="text-transform:uppercase;letter-spacing:.6px">Resiliência após feedbacks negativos</div>
+              <div class="emo-row">
+                <div class="emo-icon" style="background:var(--green-l)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#0F6E56" stroke-width="1.5"><path d="M8 1v14M1 8h14"/></svg></div>
+                <div class="emo-lbl">Recuperação rápida</div>
+                <div style="flex:1;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden"><div style="width:82%;height:100%;background:var(--green);border-radius:3px"></div></div>
+                <div class="fs11 fw6" style="color:var(--green);width:30px;text-align:right">82%</div>
+              </div>
+              <div class="emo-row">
+                <div class="emo-icon" style="background:var(--blue-l)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--navy)" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3"/></svg></div>
+                <div class="emo-lbl">Tom após crítica</div>
+                <div style="flex:1;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden"><div style="width:74%;height:100%;background:var(--navy);border-radius:3px"></div></div>
+                <div class="fs11 fw6" style="color:var(--navy);width:30px;text-align:right">74%</div>
+              </div>
+              <div class="emo-row" style="margin-bottom:0">
+                <div class="emo-icon" style="background:var(--amber-l)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#BA7517" stroke-width="1.5"><path d="M8 3l1.5 4h4l-3.2 2.3 1.2 4L8 11l-3.5 2.3 1.2-4L2.5 7h4z"/></svg></div>
+                <div class="emo-lbl">Consistência emoc.</div>
+                <div style="flex:1;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden"><div style="width:78%;height:100%;background:var(--amber);border-radius:3px"></div></div>
+                <div class="fs11 fw6" style="color:var(--amber);width:30px;text-align:right">78%</div>
+              </div>
+            </div>
+            <div class="ia-box" style="margin-bottom:0">
+              <div class="ia-dot rose"></div>
+              <div class="ia-text">Tom emocional <strong>16% mais estável</strong> que a média do time. Gap: 3 episódios de tom escalado em discussões técnicas. Recomendado: desafio <em>"Gestão emocional em crise"</em>.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1197,6 +1343,7 @@ tr:hover td{background:rgba(27,42,107,.02)}
               <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Detecção de hedging</span><span class="badge b-green" style="font-size:9px">Ativo</span></div>
               <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Indicadores de colaboração</span><span class="badge b-green" style="font-size:9px">Ativo</span></div>
               <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Análise pronomes (nós/eu)</span><span class="badge b-navy" style="font-size:9px">Beta</span></div>
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Variabilidade emocional</span><span class="badge b-green" style="font-size:9px">Ativo</span></div>
             </div>
             <div style="padding:10px;background:var(--blue-l);border-radius:var(--r8)"><div class="fs11 muted">Última análise</div><div class="fs12 mt8">Transcrição Daily · hoje 09:32</div><div class="fs11 mt4" style="color:var(--green)">Confiança: 96%</div></div>
           </div>
@@ -1209,12 +1356,268 @@ tr:hover td{background:rgba(27,42,107,.02)}
           </div>
           <div class="card"><div class="card-title mb8">Auditoria ética (SHAP)</div><div class="card-sub">Fairness e explicabilidade algorítmica</div>
             <div class="stack mb12">
-              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Viés de gênero</span><span class="badge b-green" style="font-size:9px">✓ Neutro</span></div>
-              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Viés étnico/racial</span><span class="badge b-green" style="font-size:9px">✓ Neutro</span></div>
-              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Viés de senioridade</span><span class="badge b-green" style="font-size:9px">✓ Calibrado</span></div>
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Viés de gênero</span><span class="badge b-green" style="font-size:9px">Neutro</span></div>
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Viés étnico/racial</span><span class="badge b-green" style="font-size:9px">Neutro</span></div>
+              <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Viés de senioridade</span><span class="badge b-green" style="font-size:9px">Calibrado</span></div>
               <div class="flex ai-c jb" style="padding:8px 10px;background:var(--bg);border-radius:var(--r8);font-size:12px"><span>Última auditoria</span><span class="fs12 muted">15 Jul 2025</span></div>
             </div>
             <button class="tb-btn" style="width:100%;justify-content:center;height:38px" onclick="toast('Relatório SHAP exportado em PDF','success')">Exportar relatório SHAP</button>
+          </div>
+        </div>
+
+        <!-- NOVO: SHAP Feature Importance + LIME -->
+        <div class="g2 mb14">
+          <!-- SHAP: feature importance individual -->
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">SHAP — Importância de Variáveis</div><div class="card-sub">Contribuição de cada feature para o Score IA de Lucas Mendes</div></div>
+              <span class="badge b-navy">Score: 87</span>
+            </div>
+            <div style="margin-bottom:14px">
+              <div class="fs11 muted mb10">Variáveis que mais AUMENTAM o score <span style="color:var(--navy);font-weight:600">(positivo)</span></div>
+              <div class="shap-bar-row"><div class="shap-lbl">Commits colaborativos</div><div style="flex:1"><div class="shap-pos" style="width:82%"></div></div><div class="shap-val" style="color:var(--navy)">+8,2</div></div>
+              <div class="shap-bar-row"><div class="shap-lbl">Resolução de problemas</div><div style="flex:1"><div class="shap-pos" style="width:74%"></div></div><div class="shap-val" style="color:var(--navy)">+7,4</div></div>
+              <div class="shap-bar-row"><div class="shap-lbl">Pronomes colaborativos</div><div style="flex:1"><div class="shap-pos" style="width:61%"></div></div><div class="shap-val" style="color:var(--navy)">+6,1</div></div>
+              <div class="shap-bar-row"><div class="shap-lbl">Code reviews dados</div><div style="flex:1"><div class="shap-pos" style="width:52%"></div></div><div class="shap-val" style="color:var(--navy)">+5,2</div></div>
+              <div class="shap-bar-row"><div class="shap-lbl">Frequência de feedback</div><div style="flex:1"><div class="shap-pos" style="width:44%"></div></div><div class="shap-val" style="color:var(--navy)">+4,4</div></div>
+            </div>
+            <div>
+              <div class="fs11 muted mb10">Variáveis que mais REDUZEM o score <span style="color:var(--rose);font-weight:600">(negativo)</span></div>
+              <div class="shap-bar-row"><div class="shap-lbl">Reuniões lideradas</div><div style="flex:1"><div class="shap-neg" style="width:68%"></div></div><div class="shap-val" style="color:var(--rose)">-6,8</div></div>
+              <div class="shap-bar-row"><div class="shap-lbl">Tom escalado (NLP)</div><div style="flex:1"><div class="shap-neg" style="width:43%"></div></div><div class="shap-val" style="color:var(--rose)">-4,3</div></div>
+              <div class="shap-bar-row"><div class="shap-lbl">Variabilidade emocional</div><div style="flex:1"><div class="shap-neg" style="width:29%"></div></div><div class="shap-val" style="color:var(--rose)">-2,9</div></div>
+            </div>
+          </div>
+
+          <!-- LIME: explicação local por texto -->
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">LIME — Explicação Local</div><div class="card-sub">Por que a IA classificou este trecho como "Alta Colaboração"?</div></div>
+              <span class="badge b-green">Confiança: 91%</span>
+            </div>
+            <div style="background:var(--bg);border-radius:var(--r12);padding:14px;margin-bottom:14px">
+              <div class="fs11 muted mb8">Trecho analisado — Daily Standup (hoje 09:32)</div>
+              <div style="font-size:13px;line-height:1.9;color:var(--ink)">
+                <span class="lime-token" style="background:#D5E8F0;color:#0C447C">"Conseguimos"</span>
+                <span class="lime-token" style="background:rgba(0,0,0,0)">terminar</span>
+                <span class="lime-token" style="background:#EAF5F1;color:#085041">a migração</span>
+                <span class="lime-token" style="background:rgba(0,0,0,0)">antes do prazo.</span>
+                <span class="lime-token" style="background:#D5E8F0;color:#0C447C">"Nossa"</span>
+                <span class="lime-token" style="background:rgba(0,0,0,0)">equipe</span>
+                <span class="lime-token" style="background:#EAF5F1;color:#085041">foi incrível.</span>
+                <span class="lime-token" style="background:rgba(0,0,0,0)">Vou</span>
+                <span class="lime-token" style="background:#EAF5F1;color:#085041">compartilhar</span>
+                <span class="lime-token" style="background:rgba(0,0,0,0)">os aprendizados</span>
+                <span class="lime-token" style="background:#D5E8F0;color:#0C447C">"com todos"</span>
+                <span class="lime-token" style="background:rgba(0,0,0,0)">na retro.</span>
+              </div>
+            </div>
+            <div class="stack">
+              <div style="padding:8px 10px;background:var(--green-l);border-radius:var(--r8);display:flex;align-items:center;gap:8px">
+                <div style="width:10px;height:10px;background:#D5E8F0;border:1.5px solid #0C447C;border-radius:2px;flex-shrink:0"></div>
+                <div class="fs11" style="color:#085041">Pronomes coletivos — peso <strong>+0,34</strong> na predição</div>
+              </div>
+              <div style="padding:8px 10px;background:var(--green-l);border-radius:var(--r8);display:flex;align-items:center;gap:8px">
+                <div style="width:10px;height:10px;background:#EAF5F1;border:1.5px solid #0F6E56;border-radius:2px;flex-shrink:0"></div>
+                <div class="fs11" style="color:#085041">Linguagem de compartilhamento — peso <strong>+0,28</strong></div>
+              </div>
+            </div>
+            <div class="ia-box mt12" style="margin-bottom:0">
+              <div class="ia-dot green"></div>
+              <div class="ia-text">LIME identificou 3 marcadores linguísticos de alta colaboração neste trecho. Esta explicação justifica +2,1 pts no eixo Trabalho em Equipe desta semana.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── ARTEFATOS DIGITAIS ───── -->
+      <div id="page-artefatos" class="page">
+        <div class="kpi-grid mb14">
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--navy)"></div><div class="kpi-label">Commits (30 dias)</div><div class="kpi-val" style="color:var(--navy)">47</div><div class="kpi-delta"><span class="up">↑ +9</span>&nbsp;vs mês anterior</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--green)"></div><div class="kpi-label">PRs revisados</div><div class="kpi-val" style="color:var(--green)">12</div><div class="kpi-delta"><span class="up">Top 20%</span>&nbsp;do time</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--amber)"></div><div class="kpi-label">Fóruns respondidos</div><div class="kpi-val" style="color:var(--amber)">23</div><div class="kpi-delta"><span class="up">↑ +5</span>&nbsp;esta semana</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--rose)"></div><div class="kpi-label">Qualidade docs</div><div class="kpi-val" style="color:var(--rose)">88%</div><div class="kpi-delta"><span class="up">↑ +4pp</span>&nbsp;vs trimestre</div></div>
+        </div>
+        <div class="g2 mb14">
+          <!-- Git Activity -->
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Repositório Git — Atividade Colaborativa</div><div class="card-sub">Fonte: GitHub · sincronizado há 2h</div></div><span class="badge b-green">Conectado</span></div>
+            <div class="table-wrap mb12">
+              <table>
+                <thead><tr><th>Repositório</th><th>Commits</th><th>PRs</th><th>Reviews</th><th>Collab %</th></tr></thead>
+                <tbody>
+                  <tr><td><div class="flex ai-c gap6"><div style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>infra-k8s</div></td><td style="color:var(--navy);font-weight:600">18</td><td style="color:var(--green);font-weight:600">4</td><td style="color:var(--navy)">3</td><td><span class="badge b-green" style="font-size:9px">68%</span></td></tr>
+                  <tr><td><div class="flex ai-c gap6"><div style="width:8px;height:8px;border-radius:50%;background:var(--navy)"></div>api-gateway</div></td><td style="color:var(--navy);font-weight:600">15</td><td style="color:var(--green);font-weight:600">5</td><td style="color:var(--navy)">4</td><td><span class="badge b-navy" style="font-size:9px">73%</span></td></tr>
+                  <tr><td><div class="flex ai-c gap6"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber)"></div>monitoring</div></td><td style="color:var(--navy);font-weight:600">9</td><td style="color:var(--green);font-weight:600">2</td><td style="color:var(--navy)">1</td><td><span class="badge b-amber" style="font-size:9px">44%</span></td></tr>
+                  <tr><td><div class="flex ai-c gap6"><div style="width:8px;height:8px;border-radius:50%;background:var(--rose)"></div>runbooks</div></td><td style="color:var(--navy);font-weight:600">5</td><td style="color:var(--green);font-weight:600">1</td><td style="color:var(--navy)">0</td><td><span class="badge b-rose" style="font-size:9px">20%</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="ia-box" style="margin-bottom:0">
+              <div class="ia-dot"></div>
+              <div class="ia-text">Padrão de commits: 74% em horário comercial, picos às 10h–12h. Alta proporção de commits em projetos com 3+ colaboradores indica <strong>perfil colaborativo</strong>. Documentação de runbooks abaixo da média — recomendado no PDI.</div>
+            </div>
+          </div>
+          <!-- Logs e Fóruns -->
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Logs de Sistema & Fóruns</div><div class="card-sub">Artefatos digitais: Slack · Confluence · Jira</div></div></div>
+            <div style="margin-bottom:14px">
+              <div class="fs11 fw6 navy mb8" style="text-transform:uppercase;letter-spacing:.6px">Atividade em fóruns internos (Confluence)</div>
+              <div class="artifact-row">
+                <div class="artifact-icon" style="background:var(--blue-l)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--navy)" stroke-width="1.4"><path d="M3 3h10v10H3z"/><path d="M6 6h4M6 9h3"/></svg></div>
+                <div style="flex:1"><div class="fs12 fw5 navy">Respondeu 23 dúvidas técnicas</div><div class="fs11 muted">Tempo médio de resposta: 47 min</div></div>
+                <span class="badge b-green" style="font-size:9px">+18% engaj.</span>
+              </div>
+              <div class="artifact-row">
+                <div class="artifact-icon" style="background:var(--green-l)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#0F6E56" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg></div>
+                <div style="flex:1"><div class="fs12 fw5 navy">Criou 4 artigos de documentação</div><div class="fs11 muted">Total de views: 1.240</div></div>
+                <span class="badge b-navy" style="font-size:9px">Top autor</span>
+              </div>
+              <div class="artifact-row">
+                <div class="artifact-icon" style="background:var(--amber-l)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.4"><path d="M2 14l2-5 9-9 3 3-9 9-5 2z"/></svg></div>
+                <div style="flex:1"><div class="fs12 fw5 navy">Editou 11 páginas colaborativamente</div><div class="fs11 muted">Com 3+ coautores em 8 delas</div></div>
+                <span class="badge b-amber" style="font-size:9px">Colaborativo</span>
+              </div>
+            </div>
+            <div>
+              <div class="fs11 fw6 navy mb8" style="text-transform:uppercase;letter-spacing:.6px">Logs Slack — padrões detectados</div>
+              <div class="artifact-row" style="margin-bottom:6px">
+                <div class="artifact-icon" style="background:#EEEDFE"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#534AB7" stroke-width="1.4"><path d="M4 6h8M4 10h5"/><rect x="2" y="3" width="12" height="10" rx="2"/></svg></div>
+                <div style="flex:1"><div class="fs12 fw5 navy">Mensagens com linguagem colaborativa</div><div class="fs11 muted">94% uso de "nós", "nosso time", "juntos"</div></div>
+                <span class="badge b-purple" style="font-size:9px">NLP: +0,34</span>
+              </div>
+              <div class="artifact-row" style="margin-bottom:0">
+                <div class="artifact-icon" style="background:var(--rose-xl)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--rose)" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><path d="M8 5v3M8 11v.5"/></svg></div>
+                <div style="flex:1"><div class="fs12 fw5 navy">Episódios de tom escalado detectados</div><div class="fs11 muted">3 ocorrências · Gap de Autocontrole</div></div>
+                <span class="badge b-rose" style="font-size:9px">Atenção</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ───── VALIDAÇÃO & ÉTICA ───── -->
+      <div id="page-validacao" class="page">
+        <div class="kpi-grid mb14">
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--navy)"></div><div class="kpi-label">Coeficiente Kappa</div><div class="kpi-val" style="color:var(--navy)">0,87</div><div class="kpi-delta"><span class="up">Substancial</span>&nbsp;(limiar ≥ 0,61)</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--green)"></div><div class="kpi-label">Acurácia Random Forest</div><div class="kpi-val" style="color:var(--green)">93,7%</div><div class="kpi-delta"><span class="up">↑ +1,2pp</span>&nbsp;vs Q2</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--amber)"></div><div class="kpi-label">Próxima calibração</div><div class="kpi-val" style="color:var(--amber)">18 dias</div><div class="kpi-delta">Ciclo trimestral · Out 2025</div></div>
+          <div class="kpi-card"><div class="kpi-stripe" style="background:var(--rose)"></div><div class="kpi-label">Decisões sob revisão</div><div class="kpi-val" style="color:var(--rose)">3</div><div class="kpi-delta">Aguardando aprovação humana</div></div>
+        </div>
+
+        <div class="g2 mb14">
+          <!-- Protocolo de Validação Convergente -->
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">Protocolo de Validação Convergente</div><div class="card-sub">Comparação periódica: predições IA vs. avaliação de especialistas humanos</div></div>
+              <span class="badge b-green">Q3 2025 Concluído</span>
+            </div>
+            <div class="vcycle">
+              <div class="vcycle-num done">1</div>
+              <div><div class="fs12 fw5 navy">Coleta de amostra aleatória</div><div class="fs11 muted">38 colaboradores selecionados · ≥30 exigidos pelo protocolo</div><span class="badge b-green" style="font-size:9px;margin-top:4px;display:inline-flex">Concluído · 12 Jul</span></div>
+            </div>
+            <div class="vcycle">
+              <div class="vcycle-num done">2</div>
+              <div><div class="fs12 fw5 navy">Avaliação por especialistas humanos</div><div class="fs11 muted">3 especialistas de RH classificaram independentemente as mesmas amostras</div><span class="badge b-green" style="font-size:9px;margin-top:4px;display:inline-flex">Concluído · 19 Jul</span></div>
+            </div>
+            <div class="vcycle">
+              <div class="vcycle-num done">3</div>
+              <div><div class="fs12 fw5 navy">Cálculo do Coeficiente Kappa</div><div class="fs11 muted">Resultado: Kappa = 0,87 · Concordância substancial confirmada</div><span class="badge b-navy" style="font-size:9px;margin-top:4px;display:inline-flex">Kappa: 0,87</span></div>
+            </div>
+            <div class="vcycle">
+              <div class="vcycle-num done">4</div>
+              <div><div class="fs12 fw5 navy">Auditoria de fairness (SHAP)</div><div class="fs11 muted">Viés de gênero, etnia e senioridade: todos neutros ou calibrados</div><span class="badge b-green" style="font-size:9px;margin-top:4px;display:inline-flex">Aprovado · 22 Jul</span></div>
+            </div>
+            <div class="vcycle">
+              <div class="vcycle-num next">5</div>
+              <div><div class="fs12 fw5 navy">Recalibração trimestral do modelo</div><div class="fs11 muted">Próximo ciclo: Out 2025 — recalibração apenas se Kappa &lt; 0,61</div><span class="badge b-amber" style="font-size:9px;margin-top:4px;display:inline-flex">Agendado · 15 Out</span></div>
+            </div>
+
+            <!-- Gráfico Kappa histórico -->
+            <div style="background:var(--bg);border-radius:var(--r12);padding:12px;margin-top:14px">
+              <div class="fs11 fw6 navy mb8" style="text-transform:uppercase;letter-spacing:.6px">Evolução do Kappa — ciclos de validação</div>
+              <svg width="100%" viewBox="0 0 300 80">
+                <line x1="0" y1="55" x2="300" y2="55" stroke="#E4E7F0" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="0" y="60" font-size="8" font-family="DM Sans" fill="#8B90A8">0,61</text>
+                <polyline points="40,50 100,42 160,38 220,32 280,18" fill="none" stroke="#1B2A6B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="40" cy="50" r="4" fill="#1B2A6B"/>
+                <circle cx="100" cy="42" r="4" fill="#1B2A6B"/>
+                <circle cx="160" cy="38" r="4" fill="#1B2A6B"/>
+                <circle cx="220" cy="32" r="4" fill="#1B2A6B"/>
+                <circle cx="280" cy="18" r="5" fill="#1B2A6B" stroke="white" stroke-width="2"/>
+                <text x="40" y="74" text-anchor="middle" font-size="8" font-family="DM Sans" fill="#8B90A8">Q3 24</text>
+                <text x="100" y="74" text-anchor="middle" font-size="8" font-family="DM Sans" fill="#8B90A8">Q4 24</text>
+                <text x="160" y="74" text-anchor="middle" font-size="8" font-family="DM Sans" fill="#8B90A8">Q1 25</text>
+                <text x="220" y="74" text-anchor="middle" font-size="8" font-family="DM Sans" fill="#8B90A8">Q2 25</text>
+                <text x="280" y="74" text-anchor="middle" font-size="8" font-family="DM Sans" fill="#8B90A8">Q3 25</text>
+                <text x="280" y="13" text-anchor="middle" font-size="8.5" font-family="DM Sans" fill="#0F6E56" font-weight="600">0,87</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- HITL — Painel de Decisão Humana -->
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">Human-in-the-Loop — Painel de Decisão</div><div class="card-sub">A IA recomenda · o humano decide. Soberania garantida.</div></div>
+              <span class="badge b-amber">3 pendentes</span>
+            </div>
+
+            <div style="padding:10px;background:var(--amber-l);border:1px solid #F5C4B3;border-radius:var(--r8);margin-bottom:14px;display:flex;gap:8px">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" style="flex-shrink:0;margin-top:1px"><circle cx="8" cy="8" r="6"/><path d="M8 5v3M8 11v.5"/></svg>
+              <div class="fs12" style="color:#633806">As decisões abaixo foram geradas pela IA como <strong>sugestões</strong>. O gestor ou RH deve aprovar, editar ou rejeitar antes de qualquer efeito no sistema.</div>
+            </div>
+
+            <div class="hitl-card pending">
+              <div class="hitl-status"><span class="badge b-amber">Aguardando</span></div>
+              <div class="flex ai-c gap10 mb8">
+                <div class="av av-32 c-navy">LM</div>
+                <div><div class="fs12 fw6 navy">Lucas Mendes</div><div class="fs11 muted">SRE Senior</div></div>
+              </div>
+              <div class="fs12 muted mb6">Recomendação da IA:</div>
+              <div class="ia-box" style="margin-bottom:10px">
+                <div class="ia-dot"></div>
+                <div class="ia-text fs12">Indicado para <strong>promoção a Tech Lead</strong> em 90 dias se concluir trilha de Liderança. Confiança: 87%.</div>
+              </div>
+              <div class="flex gap8">
+                <button class="tb-btn prim" style="flex:1;justify-content:center;font-size:11px" onclick="toast('Recomendação aprovada pelo gestor! Lucas notificado.','success')">Aprovar</button>
+                <button class="tb-btn" style="flex:1;justify-content:center;font-size:11px" onclick="toast('Decisão devolvida para revisão com comentário','info')">Editar</button>
+                <button class="tb-btn" style="flex:1;justify-content:center;font-size:11px;color:#A32D2D;border-color:#F09595" onclick="toast('Recomendação rejeitada. Motivo registrado.','warn')">Rejeitar</button>
+              </div>
+            </div>
+
+            <div class="hitl-card pending">
+              <div class="hitl-status"><span class="badge b-amber">Aguardando</span></div>
+              <div class="flex ai-c gap10 mb8">
+                <div class="av av-32 c-blue">MO</div>
+                <div><div class="fs12 fw6 navy">Mariana Oliveira</div><div class="fs11 muted">Product Designer</div></div>
+              </div>
+              <div class="fs12 muted mb6">Recomendação da IA:</div>
+              <div class="ia-box" style="margin-bottom:10px">
+                <div class="ia-dot rose"></div>
+                <div class="ia-text fs12">PDI com foco em <strong>Adaptabilidade</strong> — queda de 12pp detectada no último ciclo.</div>
+              </div>
+              <div class="flex gap8">
+                <button class="tb-btn prim" style="flex:1;justify-content:center;font-size:11px" onclick="toast('PDI aprovado e ativado para Mariana','success')">Aprovar PDI</button>
+                <button class="tb-btn" style="flex:1;justify-content:center;font-size:11px" onclick="toast('PDI enviado para revisão com RH','info')">Revisar</button>
+              </div>
+            </div>
+
+            <div class="hitl-card approved">
+              <div class="hitl-status"><span class="badge b-green">Aprovado</span></div>
+              <div class="flex ai-c gap10 mb6">
+                <div class="av av-32 c-rose">AC</div>
+                <div><div class="fs12 fw6 navy">Ana Costa</div><div class="fs11 muted">Staff Engineer</div></div>
+              </div>
+              <div class="fs12 muted">Promoção para Diretoria aprovada · 22 Jul 2025 por <strong>RH Admin</strong></div>
+            </div>
+
+            <div style="margin-top:14px;padding:12px;background:var(--blue-l);border-radius:var(--r12);border:1px solid var(--border2)">
+              <div class="flex ai-c gap8 mb6">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--navy)" stroke-width="1.5"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1z"/><path d="M5 8l2.5 2.5L11 5.5"/></svg>
+                <div class="fs12 fw6 navy">Princípio HITL — HumanWare</div>
+              </div>
+              <div class="fs11 muted" style="line-height:1.6">A IA nunca toma decisões sobre pessoas de forma autônoma. Todas as recomendações de promoção, PDI e desligamento passam obrigatoriamente pela aprovação de gestores ou RH antes de qualquer efeito no sistema.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1319,7 +1722,10 @@ const pageTitles={
   competencias:'Competências HumanWare',desafios:'Desafios & XP',
   avaliacao:'Avaliação 360°',squad:'Squad builder',
   analytics:'People analytics',talentos:'Gestão de talentos',
-  ranking:'Ranking',ia_engine:'IA Engine',conteudo:'Hub de conteúdo'
+  ranking:'Ranking',ia_engine:'IA Engine',
+  artefatos:'Artefatos Digitais',
+  validacao:'Validação & Ética — HITL',
+  conteudo:'Hub de conteúdo'
 };
 function nav(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
